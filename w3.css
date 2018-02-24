@@ -300,19 +300,28 @@ a {
 }
 
 .w3-table,
-.w3-table-all {
+.w3-table-all,
+.w3-table-all-fixtures {
     border-collapse: collapse;
     border-spacing: 0;
     width: 100%;
     display: table
 }
 
-.w3-table-all {
+.w3-table-all,
+.w3-table-all-fixtures {
     border: 1px solid #ccc
 }
 
 .w3-bordered tr,
-.w3-table-all tr {
+.w3-table-all tr:first-child,
+.w3-table-all-fixtures tr:first-child {
+    border-bottom: none
+}
+
+.w3-bordered tr,
+.w3-table-all tr,
+.w3-table-all-fixtures tr {
     border-bottom: 1px solid #ddd
 }
 
@@ -328,6 +337,13 @@ a {
     background-color: #f1f1f1
 }
 
+.w3-table-all-fixtures tr:nth-child(odd) {
+    background-color: #f1f1f1
+}
+
+.w3-table-all-fixtures tr:nth-child(even) {
+    background-color: #fff
+}
 .w3-hoverable tbody tr:hover,
 .w3-ul.w3-hoverable li:hover {
     background-color: #ccc
@@ -341,7 +357,9 @@ a {
 .w3-table td,
 .w3-table th,
 .w3-table-all td,
-.w3-table-all th {
+.w3-table-all th,
+.w3-table-all-fixtures td,
+.w3-table-all-fixtures th {
     padding: 8px 8px;
     display: table-cell;
     text-align: left;
@@ -351,7 +369,9 @@ a {
 .w3-table th:first-child,
 .w3-table td:first-child,
 .w3-table-all th:first-child,
-.w3-table-all td:first-child {
+.w3-table-all td:first-child,
+.w3-table-all-fixtures th:first-child, 
+.w3-table-all-fixtures td:first-child {
     padding-left: 16px
 }
 
