@@ -344,6 +344,7 @@ a {
 .w3-table-all-fixtures tr:nth-child(even) {
     background-color: #fff
 }
+
 .w3-hoverable tbody tr:hover,
 .w3-ul.w3-hoverable li:hover {
     background-color: #ccc
@@ -370,7 +371,7 @@ a {
 .w3-table td:first-child,
 .w3-table-all th:first-child,
 .w3-table-all td:first-child,
-.w3-table-all-fixtures th:first-child, 
+.w3-table-all-fixtures th:first-child,
 .w3-table-all-fixtures td:first-child {
     padding-left: 16px
 }
@@ -1978,7 +1979,7 @@ html {
 }
 
 @media only screen and (min-width: 992px) {
-    /* Underline effect on navbar */ 
+    /* Underline effect on navbar */
     #myNavbar > div > a {
         display: inline-block;
         margin: 0;
@@ -2030,27 +2031,49 @@ html {
         transform: scaleX(1);
     }
 
+    #btnViewAdmin {
+        display: inline-block;
+        margin: 0;
+        padding: 12px 20px;
+        -webkit-touch-callout: none;
+        -webkit-user-select: none;
+        -khtml-user-select: none;
+        -moz-user-select: none;
+        -ms-user-select: none;
+        user-select: none
+    }
+
+    #btnViewAdmin:after {
+        display: block;
+        content: '';
+        border-bottom: solid 1px #ff4d4d;
+        transform: scaleX(0);
+        transition: transform 350ms ease-in-out;
+    }
+
+    #btnViewAdmin:hover:after {
+        transform: scaleX(1);
+    }
+
     #navBarDropInfo {
-        width: 180px;
-        right:423px;
+        width: 175px;
         top: 51px;
         z-index: -1;
-        text-align: center;
+        text-align: left;
     }
-    
+
     #navBarDropScores {
-        width: 180px;
-        right:85px;
+        width: 175px;
         top: 51px;
         z-index: -1;
-        text-align: center;
+        text-align: left;
     }
-    
+
     #navBarDropProfile {
         width: 150px;
         top: 51px;
         right:0px;
         z-index: -1;
-        text-align: center;
+        text-align: left;
     }
 }

@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html>
-<title>TT Portal</title>
+<title>TT Portal (Admin)</title>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 
@@ -60,7 +60,7 @@
         if (localStorage.username) {
             //logged in
             var username = localStorage.username;
-            document.getElementById('profileData').src = "profileData?u=" + username;
+            document.getElementById('addProfile').src = "addProfile?u=" + username;
         } else {
             //Not logged in
             window.location.replace('/');
@@ -68,7 +68,7 @@
     };
 
     function resizeIframe(obj) {
-        obj.style.height = 75 + obj.contentWindow.document.body.scrollHeight + 'px';
+        obj.style.height = 25 + obj.contentWindow.document.body.scrollHeight + 'px';
     }
 
 </script>
@@ -164,9 +164,9 @@
     </div>
 
     <div class="w3-container w3-white w3-center" style="padding-top:75px">
-        <h2 class="w3-center">Profile</h2>
+        <h2 class="w3-center">Admin</h2>
         
-        <iframe id="profileData" style="border: none;width: 100%" onload="resizeIframe(this)" src=""></iframe>
+        <iframe id="addProfile" style="border: none;width: 100%" onload="resizeIframe(this)" src=""></iframe>
 
     </div>
 
