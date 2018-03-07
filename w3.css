@@ -430,7 +430,13 @@ a {
     display: inline-block;
     padding-left: 8px;
     padding-right: 8px;
-    text-align: center
+    text-align: center;
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none
 }
 
 .w3-badge {
@@ -2031,6 +2037,22 @@ html {
         transform: scaleX(1);
     }
 
+    #adminNav > a {
+        display: inline-block;
+        margin: 0;
+    }
+
+    #adminNav > a:after {
+        display: block;
+        content: '';
+        border-bottom: solid 1px #ff4d4d;
+        transform: scaleX(0);
+        transition: transform 350ms ease-in-out;
+    }
+
+    #adminNav > a:hover:after {
+        transform: scaleX(1);
+    }
     #btnViewAdmin {
         display: inline-block;
         margin: 0;
@@ -2057,22 +2079,22 @@ html {
 
     #navBarDropInfo {
         width: 175px;
-        top: 51px;
+        top: 52px;
         z-index: -1;
         text-align: left;
     }
 
     #navBarDropScores {
         width: 175px;
-        top: 51px;
+        top: 52px;
         z-index: -1;
         text-align: left;
     }
 
     #navBarDropProfile {
         width: 150px;
-        top: 51px;
-        right:0px;
+        top: 52px;
+        right: 0px;
         z-index: -1;
         text-align: left;
     }

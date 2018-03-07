@@ -56,6 +56,9 @@
         }
     }
 
+    function resizeIframe(obj) {
+        obj.style.height = 75 + obj.contentWindow.document.body.scrollHeight + 'px';
+    }
 </script>
 
 <body>
@@ -148,9 +151,12 @@
             </footer>
         </div>
     </div>
-    
+
     <div class="w3-container w3-white w3-center" style="padding-top:75px">
         <h2 class="w3-center">Contacts</h2>
+
+        <iframe id="contactsData" style="border: none;width: 100%" onload="resizeIframe(this)" src="contactsData"></iframe>
+        
     </div>
 
     <script>
