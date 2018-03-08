@@ -2079,21 +2079,21 @@ html {
 
     #navBarDropInfo {
         width: 175px;
-        top: 52px;
+        top: 51px;
         z-index: -1;
         text-align: left;
     }
 
     #navBarDropScores {
         width: 175px;
-        top: 52px;
+        top: 51px;
         z-index: -1;
         text-align: left;
     }
 
     #navBarDropProfile {
         width: 150px;
-        top: 52px;
+        top: 51px;
         right: 0px;
         z-index: -1;
         text-align: left;
