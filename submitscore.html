@@ -55,7 +55,21 @@
             $('#loginPopOut').show();
         }
     }
+    
+    window.onload = function() {
+        if (localStorage.username) {
+            //logged in
+            var username = localStorage.username;
+            document.getElementById('submitscore').src = "submitScoreTeam?u=" + username;
+        } else {
+            //Not logged in
+            //window.location.replace('/');
+        }
+    };
 
+    function resizeIframe(obj) {
+        obj.style.height = 75 + obj.contentWindow.document.body.scrollHeight + 'px';
+    }
 </script>
 
 <body>
@@ -150,6 +164,9 @@
     
     <div class="w3-container w3-white w3-center" style="padding-top:75px">
         <h2 class="w3-center">Submit Score</h2>
+        
+            <iframe id="submitscore" style="border: none;width: 100%;" onload="resizeIframe(this)" src=""></iframe>
+        
     </div>
 
     <script>
