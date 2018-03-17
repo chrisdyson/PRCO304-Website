@@ -558,10 +558,10 @@ a {
 
 .w3-check,
 .w3-radio {
-    width: 24px;
-    height: 24px;
+    width: 17px;
+    height: 17px;
     position: relative;
-    top: 6px
+    top: 2px
 }
 
 .w3-sidebar {

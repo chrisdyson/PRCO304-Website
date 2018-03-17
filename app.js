@@ -198,3 +198,7 @@ app.post('/submitScorePlayer', function (req, res) {
 app.post('/submitScoreScores', function (req, res) {
     submitScore.pageDataEnterScores(req, res);
 });
+
+app.post('/submitScorePost', function (req, res) {
+    submitScore.pageDataPostSubmitScores(req, res);
+});
