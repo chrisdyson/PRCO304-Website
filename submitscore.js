@@ -153,10 +153,13 @@ exports.pageDataSelectPlayer = function (req, res) {
                                         res.write('<option value="' + rows[i].userID + '">' + rows[i].firstName + ' ' + rows[i].lastName + '</option>');
                                     }
                                 }
-                                res.write('<option value="" disabled>--------------------</option>');
-                                res.write('<option value="playedUp">Played Up</option>');
-                                res.write('<option value="noPlayer">No Player</option>');
+                                if (j == 3) {
+                                    res.write('<option value="" disabled>--------------------</option>');
+                                    res.write('<option value="playedUp">Played Up</option>');
+                                    res.write('<option value="noPlayer">No Player</option>');
+                                }
                                 res.write('</select><br><br>');
+
                             }
                             res.write('<p><i>Doubles</i></p>');
                             for (j = 1; j < 3; j++) {
@@ -167,9 +170,12 @@ exports.pageDataSelectPlayer = function (req, res) {
                                         res.write('<option value="' + rows[i].userID + '">' + rows[i].firstName + ' ' + rows[i].lastName + '</option>');
                                     }
                                 }
-                                res.write('<option value="" disabled>--------------------</option>');
-                                res.write('<option value="playedUp">Played Up</option>');
+                                if (j == 2) {
+                                    res.write('<option value="" disabled>--------------------</option>');
+                                    res.write('<option value="playedUp">Played Up</option>');
+                                }
                                 res.write('</select><br><br>');
+
                             }
                             res.write('<br>');
                             res.write('<b>Away Team </b><br>');
@@ -183,10 +189,13 @@ exports.pageDataSelectPlayer = function (req, res) {
                                         res.write('<option value="' + rows[i].userID + '">' + rows[i].firstName + ' ' + rows[i].lastName + '</option>');
                                     }
                                 }
-                                res.write('<option value="" disabled>--------------------</option>');
-                                res.write('<option value="playedUp">Played Up</option>');
-                                res.write('<option value="noPlayer">No Player</option>');
+                                if (j == 3) {
+                                    res.write('<option value="" disabled>--------------------</option>');
+                                    res.write('<option value="playedUp">Played Up</option>');
+                                    res.write('<option value="noPlayer">No Player</option>');
+                                }
                                 res.write('</select><br><br>');
+
                             }
                             res.write('<p><i>Doubles</i></p>');
                             for (j = 1; j < 3; j++) {
@@ -197,9 +206,12 @@ exports.pageDataSelectPlayer = function (req, res) {
                                         res.write('<option value="' + rows[i].userID + '">' + rows[i].firstName + ' ' + rows[i].lastName + '</option>');
                                     }
                                 }
-                                res.write('<option value="" disabled>--------------------</option>');
-                                res.write('<option value="playedUp">Played Up</option>');
+                                if (j == 2) {
+                                    res.write('<option value="" disabled>--------------------</option>');
+                                    res.write('<option value="playedUp">Played Up</option>');
+                                }
                                 res.write('</select><br><br>');
+
                             }
                             res.write('<br>');
                             res.write('<input type="hidden" name="homeTeam" value="' + homeTeamID + '">');
@@ -267,6 +279,9 @@ exports.pageDataEnterScores = function (req, res) {
             var DAname1 = "";
             var DAname2 = "";
 
+            var playedUp = "Played Up";
+            var noPlayer = "No Player";
+
             var homeTeamID = post.homeTeam;
             var awayTeamID = post.awayTeam;
 
@@ -304,6 +319,25 @@ exports.pageDataEnterScores = function (req, res) {
                                     DAname2 = rows[i].firstName + " " + rows[i].lastName;
                                 }
                             }
+
+                            if (C == "playedUp") {
+                                Cname = playedUp;
+                            } else if (C == "noPlayer") {
+                                Cname = noPlayer;
+                            }
+
+                            if (Z == "playedUp") {
+                                Zname = playedUp;
+                            } else if (Z == "noPlayer") {
+                                Zname = noPlayer;
+                            }
+                            if (DH2 == "playedUp") {
+                                DHname2 = playedUp;
+                            }
+                            if (DA2 == "playedUp") {
+                                DAname2 = playedUp;
+                            }
+
                             res.write('<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Raleway">');
                             res.write('<link rel="stylesheet" href="w3.css">');
                             res.write('<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">');
@@ -362,6 +396,15 @@ exports.pageDataEnterScores = function (req, res) {
                             res.write('</table><br>');
                             res.write('</div>');
 
+                            res.write('<script>var radioCheck1 = document.getElementsByName("CvZ");var radioCheck2 = document.getElementsByName("AvZ");var radioCheck3 = document.getElementsByName("CvY");var radioCheck4 = document.getElementsByName("CvX");var radioCheck5 = document.getElementsByName("BvZ");');
+
+                            res.write('if (radioCheck1[0].value == "noPlayer" && radioCheck1[1].value == "noPlayer") { radioCheck1[0].checked = true;radioCheck1[1].disabled = true;} else if (radioCheck1[0].value == "noPlayer") { radioCheck1[1].checked = true;radioCheck1[0].disabled = true;} else if (radioCheck1[1].value == "noPlayer") { radioCheck1[0].checked = true;radioCheck1[1].disabled = true;}');
+                            res.write('if (radioCheck2[0].value == "noPlayer") { radioCheck2[1].checked = true;radioCheck2[0].disabled = true;} else if (radioCheck2[1].value == "noPlayer") { radioCheck2[0].checked = true;radioCheck2[1].disabled = true;}');
+                            res.write('if (radioCheck3[0].value == "noPlayer") { radioCheck3[1].checked = true;radioCheck3[0].disabled = true;} else if (radioCheck3[1].value == "noPlayer") { radioCheck3[0].checked = true;radioCheck3[1].disabled = true;}');
+                            res.write('if (radioCheck4[0].value == "noPlayer") { radioCheck4[1].checked = true;radioCheck4[0].disabled = true;} else if (radioCheck4[1].value == "noPlayer") { radioCheck4[0].checked = true;radioCheck4[1].disabled = true;}');
+                            res.write('if (radioCheck5[0].value == "noPlayer") { radioCheck5[1].checked = true;radioCheck5[0].disabled = true;} else if (radioCheck5[1].value == "noPlayer") { radioCheck5[0].checked = true;radioCheck5[1].disabled = true;}');
+
+                            res.write('</script>');
 
                             res.write('<div class="w3-white w3-center" style="padding:0px 40px 15px 40px;">');
 
@@ -454,9 +497,9 @@ exports.pageDataPostSubmitScores = function (req, res) {
                 awayPoints = awayPoints + 1;
             }
 
-            if (AvZ == A || AvZ == B || AvZ == C) {
+            if (AvZ == A || AvZ == B || AvZ == C || AvZ == "playedUp") {
                 homePoints = homePoints + 1;
-            } else if (AvZ == X || AvZ == Y || AvZ == Z) {
+            } else if (AvZ == X || AvZ == Y || AvZ == Z || AvZ == "playedUp") {
                 awayPoints = awayPoints + 1;
             }
 
@@ -472,27 +515,27 @@ exports.pageDataPostSubmitScores = function (req, res) {
                 awayPoints = awayPoints + 1;
             }
 
-            if (BvZ == A || BvZ == B || BvZ == C) {
+            if (BvZ == A || BvZ == B || BvZ == C || BvZ == "playedUp") {
                 homePoints = homePoints + 1;
-            } else if (BvZ == X || BvZ == Y || BvZ == Z) {
+            } else if (BvZ == X || BvZ == Y || BvZ == Z || BvZ == "playedUp") {
                 awayPoints = awayPoints + 1;
             }
 
-            if (CvX == A || CvX == B || CvX == C) {
+            if (CvX == A || CvX == B || CvX == C || CvX == "playedUp") {
                 homePoints = homePoints + 1;
-            } else if (CvX == X || CvX == Y || CvX == Z) {
+            } else if (CvX == X || CvX == Y || CvX == Z || CvX == "playedUp") {
                 awayPoints = awayPoints + 1;
             }
 
-            if (CvY == A || CvY == B || CvY == C) {
+            if (CvY == A || CvY == B || CvY == C || CvY == "playedUp") {
                 homePoints = homePoints + 1;
-            } else if (CvY == X || CvY == Y || CvY == Z) {
+            } else if (CvY == X || CvY == Y || CvY == Z || CvY == "playedUp") {
                 awayPoints = awayPoints + 1;
             }
 
-            if (CvZ == A || CvZ == B || CvZ == C) {
+            if (CvZ == A || CvZ == B || CvZ == C || CvZ == "playedUp") {
                 homePoints = homePoints + 1;
-            } else if (CvZ == X || CvZ == Y || CvZ == Z) {
+            } else if (CvZ == X || CvZ == Y || CvZ == Z || CvZ == "playedUp") {
                 awayPoints = awayPoints + 1;
             }
 
@@ -623,6 +666,8 @@ exports.pageDataPostSubmitScores = function (req, res) {
 
             res.write('<br><br><h3 class="w3-center">Success!</h3><br><br>');
             res.write('</div>');
+            connection.end();
+            res.end();
         });
     }
 
