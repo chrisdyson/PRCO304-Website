@@ -2,10 +2,16 @@ var settings = require('./headers');
 
 var mysql = settings.mysql;
 var qs = settings.qs;
+var request = require('superagent');
+
 var dbHost = settings.dbHost;
 var dbUser = settings.dbUser;
 var dbPassword = settings.dbPassword;
 var dbDatabase = settings.dbDatabase;
+
+var mailchimpInstance = 'us17',
+    listUniqueId = '5c25f14a2e',
+    mailchimpApiKey = '13b067c971e95a96e807a776f2d753db-us17';
 
 exports.pageDataCreateProfile = function (req, res) {
 
@@ -118,14 +124,15 @@ exports.pageDataCreateProfilePost = function (req, res) {
             var team = mysql.escape(post.team);
 
             connection.connect();
-            connection.query("INSERT INTO user (username, email, password, firstName, lastName, dateOfBirth, teamID, gamesPlayed, wins, losses) VALUES (" + username + "," + email + ", 'pass'," + firstName + "," + lastName + "," + dob + "," + team + ", 0, 0, 0 )",
+            connection.query("INSERT INTO user (username, email, password, firstName, lastName, dateOfBirth, teamID, gamesPlayed, wins) VALUES (" + username + "," + email + ", 'pass'," + firstName + "," + lastName + "," + dob + "," + team + ", 0, 0 )",
                 function (err, rows, fields) {
                     if (!err) {
                         connection.end();
-                        res.write('<script>window.top.location.href = "/admin";</script>');
+
+                        res.write('<script>location.href = "/addProfileMailChimp?e='+post.email+'&u='+post.username+'&f='+post.firstName+'&l='+post.lastName+'";</script>');
                         return res.end();
                     } else { //error
-                        console.log('Error while performing Query.');
+                        console.log('Error while performing Query. qwerty');
                         res.end();
                         connection.end();
                     }
@@ -133,6 +140,31 @@ exports.pageDataCreateProfilePost = function (req, res) {
         });
     }
 
+}
+
+exports.pageDataMailChimpPost = function (req, res) {
+    request
+        .post('https://' + mailchimpInstance + '.api.mailchimp.com/3.0/lists/' + listUniqueId + '/members/')
+        .set('Content-Type', 'application/json;charset=utf-8')
+        .set('Authorization', 'Basic ' + new Buffer('any:' + mailchimpApiKey).toString('base64'))
+        .send({
+            'email_address': req.query.e,
+            'status': 'subscribed',
+            'merge_fields': {
+                'FNAME': req.query.f,
+                'USERNAME': req.query.u,
+                'LNAME': req.query.l
+            }
+        })
+        .end(function (err, response) {
+            if (response.status < 300 || (response.status === 400 && response.body.title === "Member Exists")) {
+                //res.send('Signed Up!');
+                res.write('<script>window.top.location.href = "/admin";</script>');
+            } else {
+                //res.send('Sign Up Failed :(');
+                res.write('<script>window.top.location.href = "/admin";</script>');
+            }
+        });
 }
 
 exports.pageDataDeleteProfile = function (req, res) {

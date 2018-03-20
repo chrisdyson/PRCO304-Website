@@ -119,6 +119,10 @@ app.post('/addProfile', function (req, res) {
     adminProfile.pageDataCreateProfilePost(req, res);
 });
 
+app.get('/addProfileMailChimp', function (req, res) {
+    adminProfile.pageDataMailChimpPost(req, res);
+});
+
 app.get('/addClub', function (req, res) {
     adminClub.pageDataCreateClub(req, res);
 });

@@ -357,7 +357,7 @@ exports.pageDataEnterScores = function (req, res) {
                             res.write('<tr><td style="vertical-align:middle">D</td><td style="text-align:left">' + DHname1 + '<br>' + DHname2 + '</td><td style="text-align:right">' + DAname1 + '<br>' + DAname2 + '</td><td style="vertical-align:middle">D</td></tr>');
                             res.write('</table><br>');
                             //desktop & Tablet      
-                            res.write('<table class="w3-table-all w3-card-4"><tr><th style="text-align:center;width:1%">#</th><th style="text-align:left;width:40%">Home Team</th><th style="text-align:right;width:9%"></th><th style="text-align:left;width:9%"></th><th style="text-align:right;width:40%">Away Team</th><th style="text-align:center;width:1%">#</th></tr>');
+                            res.write('<table class="w3-table-all w3-card-4"><tr><th style="text-align:center;width:1%">#</th><th style="text-align:left;width:44%">Home Team</th><th style="text-align:right;width:5%"></th><th style="text-align:left;width:5%"></th><th style="text-align:right;width:44%">Away Team</th><th style="text-align:center;width:1%">#</th></tr>');
                             res.write('<tr><td>A</td><td style="text-align:left">' + Aname + '</td><td style="text-align:right"><input onclick="getScore()" class="w3-radio" type="radio" name="AvX" value="' + A + '" required></td><td><input onclick="getScore()" class="w3-radio" type="radio" name="AvX" value="' + X + '" required></td><td style="text-align:right">' + Xname + '</td><td>X</td></tr>');
                             res.write('<tr><td>B</td><td style="text-align:left">' + Bname + '</td><td style="text-align:right"><input onclick="getScore()" class="w3-radio" type="radio" name="BvY" value="' + B + '" required></td><td><input onclick="getScore()" class="w3-radio" type="radio" name="BvY" value="' + Y + '" required></td><td style="text-align:right">' + Yname + '</td><td>Y</td></tr>');
                             res.write('<tr><td>C</td><td style="text-align:left">' + Cname + '</td><td style="text-align:right"><input onclick="getScore()" class="w3-radio" type="radio" name="CvZ" value="' + C + '" required></td><td><input onclick="getScore()" class="w3-radio" type="radio" name="CvZ" value="' + Z + '" required></td><td style="text-align:right">' + Zname + '</td><td>Z</td></tr>');
@@ -368,10 +368,10 @@ exports.pageDataEnterScores = function (req, res) {
                             res.write('<tr><td>C</td><td style="text-align:left">' + Cname + '</td><td style="text-align:right"><input onclick="getScore()" class="w3-radio" type="radio" name="CvX" value="' + C + '" required></td><td><input onclick="getScore()" class="w3-radio" type="radio" name="CvX" value="' + X + '" required></td><td style="text-align:right">' + Xname + '</td><td>X</td></tr>');
                             res.write('<tr><td>A</td><td style="text-align:left">' + Aname + '</td><td style="text-align:right"><input onclick="getScore()" class="w3-radio" type="radio" name="AvY" value="' + A + '" required></td><td><input onclick="getScore()" class="w3-radio" type="radio" name="AvY" value="' + Y + '" required></td><td style="text-align:right">' + Yname + '</td><td>Y</td></tr>');
                             res.write('<tr><td style="vertical-align:middle">D</td><td style="text-align:left">' + DHname1 + '<br>' + DHname2 + '</td><td style="text-align:right;vertical-align:middle"><input onclick="getScore()" class="w3-radio" type="radio" name="DvD" value="' + A + '" required></td><td style="vertical-align:middle"><input onclick="getScore()" class="w3-radio" type="radio" name="DvD" value="' + X + '" required></td><td style="text-align:right">' + DAname1 + '<br>' + DAname2 + '</td><td style="vertical-align:middle">D</td></tr>');
+                            
+                            res.write('<tr style="background-color:transparent;border:none"><td></td><td></td><td class="w3-card-4 w3-large w3-padding" id="tdHomeScore" style="text-align:center"></td><td style="text-align:center" id="tdAwayScore" class="w3-card-4 w3-large w3-padding" ></td><td></td><td></td></tr>');
                             res.write('</table>');
-                            res.write('<table class="w3-table-all" style="background-color:transparent;border:none">');
-                            res.write('<tr style="background-color:transparent;border:none"><td style="width:46%"></td><td id="tdHomeScore" class="w3-card-4 w3-large w3-padding" style="width:4%;text-align:center;vertical-align:middle"></td><td id="tdAwayScore" class="w3-card-4 w3-large w3-padding" style="width:4%;vertical-align:middle;text-align:center"></td style="width:46%"><td></td></tr>');
-                            res.write('</table>');
+
                             res.write('</div>');
 
                             //mobile
@@ -395,6 +395,7 @@ exports.pageDataEnterScores = function (req, res) {
                             res.write('<tr class="w3-small"><td>A</td><td style="text-align:left">' + Aname + '</td><td style="text-align:right"><input class="w3-radio" type="radio" name="AvY" value="' + A + '" required></td><td><input class="w3-radio" type="radio" name="AvY" value="' + Y + '" required></td><td style="text-align:right">' + Yname + '</td><td>Y</td></tr>');
                             res.write('<tr class="w3-small"><td style="vertical-align:middle">D</td><td style="text-align:left">' + DHname1 + '<br>' + DHname2 + '</td><td style="text-align:right;vertical-align:middle"><input class="w3-radio" type="radio" name="DvD" value="' + A + '" required></td><td style="vertical-align:middle"><input class="w3-radio" type="radio" name="DvD" value="' + X + '" required></td><td style="text-align:right">' + DAname1 + '<br>' + DAname2 + '</td><td style="vertical-align:middle">D</td></tr>');
 
+                            res.write('<tr style="background-color:transparent;border:none"><td></td><td></td><td class="w3-card-4 w3-padding" id="tdHomeScoreMob" style="text-align:center"></td><td style="text-align:center" id="tdAwayScoreMob" class="w3-card-4 w3-padding" ></td><td></td><td></td></tr>');
                             res.write('</table><br>');
                             res.write('</div>');
 
@@ -435,7 +436,7 @@ exports.pageDataEnterScores = function (req, res) {
                             res.write('if (radioCheck8[0].checked) { homeScore++;} else if (radioCheck8[1].checked) { awayScore++;}');
                             res.write('if (radioCheck9[0].checked) { homeScore++;} else if (radioCheck9[1].checked) { awayScore++;}');
                             res.write('if (radioCheck10[0].checked) { homeScore++;} else if (radioCheck10[1].checked) { awayScore++;}');
-                            res.write('tdHomeScore.innerHTML = homeScore;tdAwayScore.innerHTML = awayScore;');
+                            res.write('tdHomeScore.innerHTML = homeScore;tdAwayScore.innerHTML = awayScore;tdHomeScoreMob.innerHTML = homeScore;tdAwayScoreMob.innerHTML = awayScore;');
                             res.write('} getScore()</script>');
 
                             res.end();
