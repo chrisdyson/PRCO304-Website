@@ -19,6 +19,10 @@ app.get('/favicon.ico', function (req, res) {
     res.sendFile(__dirname + '/favicon.ico');
 });
 
+app.get('/ttball.png', function (req, res) {
+    res.sendFile(__dirname + '/ttball.png');
+});
+
 app.get('/w3.css', function (req, res) {
     res.sendFile(__dirname + '/w3.css');
 });

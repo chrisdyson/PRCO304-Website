@@ -14,6 +14,8 @@
 <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Raleway">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 <script src="http://code.jquery.com/jquery-latest.js" type="text/javascript"></script>
+<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+<link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
 
 <script>
     $(document).ready(function() {
@@ -56,9 +58,167 @@
         }
     }
 
+    $(window).resize(function() {
+        $('.scoreDiv').height($(document).height() - 200);
+    });
+
+    function resizeScores() {
+        $('.scoreDiv').height($(document).height() - 200);
+    }
+
+    var leftScore = 0;
+    var rightScore = 0;
+    var leftSet = 0;
+    var rightSet = 0;
+    var fifthSetSwapped = false;
+
+    function startMatch() {
+        $("#dialog-confirm").dialog({
+            resizable: false,
+            height: "auto",
+            width: 325,
+            modal: true,
+            buttons: {
+                "Player 1 (Left)": function() {
+                    $(this).dialog("close");
+                    $('.leftServBall').show();
+                },
+                "Player 2 (Right)": function() {
+                    $(this).dialog("close");
+                    $('.rightServBall').show();
+                }
+            }
+        });
+        $('.ui-dialog-titlebar-close').hide();
+    }
+
+    function resetMatch() {
+        leftScore = 0;
+        rightScore = 0;
+        leftSet = 0;
+        rightSet = 0;
+        fifthSetSwapped = false;
+        $('.leftServBall').hide();
+        $('.rightServBall').hide();
+        startMatch();
+    }
+
+    function resetSet() {
+        leftScore = 0;
+        rightScore = 0;
+        $('.leftIncBtn').html("<i class='fa fa-plus-circle'></i>");
+        $('.rightIncBtn').html("<i class='fa fa-plus-circle'></i>");
+
+        if (leftSet == 3 && rightSet == 0) {
+            resetMatch();
+        } else if (rightSet == 3 && leftSet == 0) {
+            resetMatch();
+        } else if (leftSet == 3 && rightSet == 1) {
+            resetMatch();
+        } else if (rightSet == 3 && leftSet == 1) {
+            resetMatch();
+        } else if (leftSet == 3 && rightSet == 2) {
+            resetMatch();
+        } else if (rightSet == 3 && leftSet == 2) {
+            resetMatch();
+        }
+    }
+
+    function servingBallChange() {
+        var points = leftScore + rightScore;
+        if (leftScore >= 10 && rightScore >= 10) {
+            $("img").toggle();
+        } else {
+            if (points % 2 == 0) {
+                $("img").toggle();
+            }
+        }
+    }
+
+    function increaseLeftScore() {
+        if (leftScore == 11 && rightScore < 10) {
+            leftSet++;
+            resetSet();
+        } else if (leftScore >= 10 && rightScore >= 10 && leftScore == rightScore + 2) {
+            leftSet++;
+            resetSet();
+        } else {
+            leftScore++;
+            if (leftScore == 11 && rightScore < 10) {
+                $('.leftIncBtn').html("<i class='fa fa-arrow-circle-o-right'></i>");
+            } else if (leftScore >= 10 && rightScore >= 10 && leftScore == rightScore + 2) {
+                $('.leftIncBtn').html("<i class='fa fa-arrow-circle-o-right'></i>");
+            }
+            servingBallChange();
+            if (leftSet == 2 && rightSet == 2) {
+                if (leftScore == 5 && fifthSetSwapped == false) {
+                    var origLScore = leftScore;
+                    var origRScore = rightScore;
+                    $("img").toggle();
+                    leftScore = origRScore;
+                    rightScore = origLScore;
+                    fifthSetSwapped = true;
+                }
+            }
+        }
+    }
+
+    function increaseRightScore() {
+        if (rightScore == 11 && leftScore < 10) {
+            rightSet++;
+            resetSet();
+        } else if (rightScore >= 10 && leftScore >= 10 && rightScore == leftScore + 2) {
+            rightSet++;
+            resetSet();
+        } else {
+            rightScore++;
+            if (rightScore == 11 && leftScore < 10) {
+                $('.rightIncBtn').html("<i class='fa fa-arrow-circle-o-right'></i>");
+            } else if (rightScore >= 10 && leftScore >= 10 && rightScore == leftScore + 2) {
+                $('.rightIncBtn').html("<i class='fa fa-arrow-circle-o-right'></i>");
+            }
+            servingBallChange();
+            if (leftSet == 2 && rightSet == 2) {
+                if (rightScore == 5 && fifthSetSwapped == false) {
+                    var origLScore = leftScore;
+                    var origRScore = rightScore;
+                    $("img").toggle();
+                    leftScore = origRScore;
+                    rightScore = origLScore;
+                    fifthSetSwapped = true;
+                }
+            }
+        }
+    }
+
+    function decreaseLeftScore() {
+        var checkLeftScore = leftScore;
+        checkLeftScore--;
+        if (checkLeftScore >= 0) {
+            leftScore--;
+            servingBallChange();
+        }
+    }
+
+    function decreaseRightScore() {
+        var checkRightScore = rightScore;
+        checkRightScore--;
+        if (checkRightScore >= 0) {
+            rightScore--;
+            servingBallChange();
+        }
+    }
+
+    function outputScore() {
+        $('.lblLeftSet').text(leftSet);
+        $('.lblRightSet').text(rightSet);
+        $('.lblLeftPoint').text(leftScore);
+        $('.lblRightPoint').text(rightScore);
+    }
+
 </script>
 
-<body>
+<body onload="resizeScores();outputScore();startMatch()">
 
     <!-- Navbar (sit on top) -->
     <div class="w3-top" style="z-index: 10">
@@ -147,9 +307,200 @@
             </footer>
         </div>
     </div>
-    
+
     <div class="w3-container w3-white w3-center" style="padding-top:75px">
-        <h2 class="w3-center">Scoreboard</h2>
+
+        <div id="dialog-confirm" title="Who won service?">
+            <p class="w3-padding"><i class="fa fa-info-circle w3-xlarge"></i> Please select who won service for this match...</p>
+        </div>
+
+        <div style="-webkit-touch-callout: none;-webkit-user-select: none;-khtml-user-select: none;-moz-user-select: none;-ms-user-select: none;user-select: none" class="w3-row w3-hide-small">
+            <div class="w3-half w3-container">
+                <div class="w3-row">
+                    <div class="w3-third w3-container w3-light-grey">
+                        <h1 class="lblLeftSet"></h1>
+                    </div>
+                    <div class="w3-third w3-container">
+                        &nbsp;
+                    </div>
+                    <div class="w3-third w3-container w3-white">
+                        <img class="leftServBall" style="display: none" src="ttball.png">
+                    </div>
+                </div>
+                <div class="scoreDiv w3-light-grey w3-cell-row w3-display-container">
+                    <p class="lblLeftPoint w3-cell w3-cell-middle w3-jumbo"></p>
+
+                    <div class="w3-display-bottommiddle w3-row" style="width:100%">
+                        <div class="w3-fifth w3-container">
+                            &nbsp;
+                        </div>
+                        <div onclick="increaseLeftScore();outputScore()" style="cursor: pointer" class="w3-fifth w3-container w3-dark-grey w3-ripple">
+                            <h2 class="leftIncBtn"><i class='fa fa-plus-circle'></i></h2>
+                        </div>
+                        <div class="w3-fifth w3-container">
+                            &nbsp;
+                        </div>
+                        <div onclick="decreaseLeftScore();outputScore()" style="cursor: pointer" class="w3-fifth w3-container w3-dark-grey w3-ripple">
+                            <h2><i class='fa fa-minus-circle'></i></h2>
+                        </div>
+                        <div class="w3-fifth w3-container">
+                            &nbsp;
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="w3-half w3-container">
+                <div class="w3-row">
+                    <div class="w3-third w3-container w3-white">
+                        <img class="rightServBall" style="display: none" src="ttball.png">&nbsp;
+                    </div>
+                    <div class="w3-third w3-container">
+                        &nbsp;
+                    </div>
+                    <div class="w3-third w3-container w3-light-grey">
+                        <h1 class="lblRightSet"></h1>
+                    </div>
+                </div>
+                <div class="scoreDiv w3-light-grey w3-cell-row w3-display-container">
+                    <p class="lblRightPoint w3-cell w3-cell-middle w3-jumbo"></p>
+
+                    <div class="w3-display-bottommiddle w3-row" style="width:100%">
+                        <div class="w3-fifth w3-container">
+                            &nbsp;
+                        </div>
+                        <div onclick="increaseRightScore();outputScore()" style="cursor: pointer" class="w3-fifth w3-container w3-dark-grey w3-ripple">
+                            <h2 class="rightIncBtn"><i class='fa fa-plus-circle'></i></h2>
+                        </div>
+                        <div class="w3-fifth w3-container">
+                            &nbsp;
+                        </div>
+                        <div onclick="decreaseRightScore();outputScore()" style="cursor: pointer" class="w3-fifth w3-container w3-dark-grey w3-ripple">
+                            <h2><i class='fa fa-minus-circle'></i></h2>
+                        </div>
+                        <div class="w3-fifth w3-container">
+                            &nbsp;
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+
+
+
+
+
+
+
+
+        <div style="-webkit-touch-callout: none;-webkit-user-select: none;-khtml-user-select: none;-moz-user-select: none;-ms-user-select: none;user-select: none" class="w3-row w3-hide-medium w3-hide-large">
+            <table style="width: 100%">
+                <tr>
+                    <td class="lblLeftSet w3-large w3-white">
+                    </td>
+                    <td>
+                        <img class="leftServBall" style="display: none" height="40px" width="40px" src="ttball.png">&nbsp;
+                    </td>
+                    <td>
+                        <img class="rightServBall" style="display: none" height="40px" width="40px" src="ttball.png">&nbsp;
+                    </td>
+                    <td class="lblRightSet w3-large w3-white">
+                    </td>
+                </tr>
+                <tr>
+                    <td style="width: 50%;" colspan="2" class="lblLeftPoint w3-jumbo w3-white"></td>
+                    <td style="width: 50%;" colspan="2" class="lblRightPoint w3-jumbo w3-white"></td>
+                </tr>
+                <tr>
+                    <td style="width:25%">
+                        <div onclick="increaseLeftScore();outputScore()" class="w3-dark-grey w3-ripple" style="cursor: pointer">
+                            <h2 class="leftIncBtn"><i class='fa fa-plus-circle'></i></h2>
+                        </div>
+                    </td>
+                    <td style="width:25%">
+                        <div onclick="decreaseLeftScore();outputScore()" class="w3-dark-grey w3-ripple" style="cursor: pointer">
+                            <h2><i class='fa fa-minus-circle'></i></h2>
+                        </div>
+                    </td>
+                    <td style="width:25%">
+                        <div onclick="increaseRightScore();outputScore()" style="cursor: pointer" class="w3-dark-grey w3-ripple">
+                            <h2 class="rightIncBtn"><i class='fa fa-plus-circle'></i></h2>
+                        </div>
+                    </td>
+                    <td style="width:25%">
+                        <div onclick="decreaseRightScore();outputScore()" style="cursor: pointer" class="w3-dark-grey w3-ripple">
+                            <h2><i class='fa fa-minus-circle'></i></h2>
+                        </div>
+                    </td>
+                </tr>
+            </table>
+
+
+
+            <div style="display: none" class="w3-half w3-container">
+                <div>
+                    <div class="w3-third w3-container w3-white">
+                        <img class="leftServBall" style="display: none" src="ttball.png">&nbsp;
+                    </div>
+                    <div class="w3-third w3-container">
+                        &nbsp;
+                    </div>
+                    <div class="w3-third w3-container w3-light-grey">
+                        <h1 class="lblLeftSet"></h1>
+                    </div>
+                </div>
+                <div class="w3-row w3-light-grey">
+                    <p class="lblLeftPoint w3-cell w3-cell-middle w3-jumbo"></p>
+                </div>
+                <div>
+                    <div onclick="increaseLeftScore();outputScore()" class="w3-half w3-container w3-dark-grey w3-ripple" style="cursor: pointer">
+                        <h2 class="leftIncBtn"><i class='fa fa-plus-circle'></i></h2>
+                    </div>
+                    <div onclick="decreaseLeftScore();outputScore()" class="w3-half w3-container w3-dark-grey w3-ripple" style="cursor: pointer">
+                        <h2><i class='fa fa-minus-circle'></i></h2>
+                    </div>
+                </div>
+            </div>
+            <div style="display: none" class="w3-half w3-container">
+                <div class="w3-row">
+                    <div class="w3-third w3-container w3-white">
+                        <img class="rightServBall" style="display: none" src="ttball.png">&nbsp;
+                    </div>
+                    <div class="w3-third w3-container">
+                        &nbsp;
+                    </div>
+                    <div class="w3-third w3-container w3-light-grey">
+                        <h1 class="lblRightSet"></h1>
+                    </div>
+                </div>
+                <div class="w3-row w3-light-grey">
+                    <p class="lblRightPoint w3-cell w3-cell-middle w3-jumbo"></p>
+                </div>
+                <div class="w3-row">
+                    <div class="w3-half w3-container w3-light-grey">
+                        <div onclick="increaseRightScore();outputScore()" style="cursor: pointer" class="w3-fifth w3-container w3-dark-grey w3-ripple">
+                            <h2 class="rightIncBtn"><i class='fa fa-plus-circle'></i></h2>
+                        </div>
+                    </div>
+                    <div class="w3-half w3-container w3-light-grey">
+                        <div onclick="decreaseRightScore();outputScore()" style="cursor: pointer" class="w3-fifth w3-container w3-dark-grey w3-ripple">
+                            <h2><i class='fa fa-minus-circle'></i></h2>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+
+
+
+
+
+
+
+
     </div>
 
     <script>
