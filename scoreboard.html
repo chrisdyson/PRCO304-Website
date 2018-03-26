@@ -385,15 +385,6 @@
             </div>
         </div>
 
-
-
-
-
-
-
-
-
-
         <div style="-webkit-touch-callout: none;-webkit-user-select: none;-khtml-user-select: none;-moz-user-select: none;-ms-user-select: none;user-select: none" class="w3-row w3-hide-medium w3-hide-large">
             <table style="width: 100%">
                 <tr>
@@ -435,98 +426,32 @@
                     </td>
                 </tr>
             </table>
-
-
-
-            <div style="display: none" class="w3-half w3-container">
-                <div>
-                    <div class="w3-third w3-container w3-white">
-                        <img class="leftServBall" style="display: none" src="ttball.png">&nbsp;
-                    </div>
-                    <div class="w3-third w3-container">
-                        &nbsp;
-                    </div>
-                    <div class="w3-third w3-container w3-light-grey">
-                        <h1 class="lblLeftSet"></h1>
-                    </div>
-                </div>
-                <div class="w3-row w3-light-grey">
-                    <p class="lblLeftPoint w3-cell w3-cell-middle w3-jumbo"></p>
-                </div>
-                <div>
-                    <div onclick="increaseLeftScore();outputScore()" class="w3-half w3-container w3-dark-grey w3-ripple" style="cursor: pointer">
-                        <h2 class="leftIncBtn"><i class='fa fa-plus-circle'></i></h2>
-                    </div>
-                    <div onclick="decreaseLeftScore();outputScore()" class="w3-half w3-container w3-dark-grey w3-ripple" style="cursor: pointer">
-                        <h2><i class='fa fa-minus-circle'></i></h2>
-                    </div>
-                </div>
-            </div>
-            <div style="display: none" class="w3-half w3-container">
-                <div class="w3-row">
-                    <div class="w3-third w3-container w3-white">
-                        <img class="rightServBall" style="display: none" src="ttball.png">&nbsp;
-                    </div>
-                    <div class="w3-third w3-container">
-                        &nbsp;
-                    </div>
-                    <div class="w3-third w3-container w3-light-grey">
-                        <h1 class="lblRightSet"></h1>
-                    </div>
-                </div>
-                <div class="w3-row w3-light-grey">
-                    <p class="lblRightPoint w3-cell w3-cell-middle w3-jumbo"></p>
-                </div>
-                <div class="w3-row">
-                    <div class="w3-half w3-container w3-light-grey">
-                        <div onclick="increaseRightScore();outputScore()" style="cursor: pointer" class="w3-fifth w3-container w3-dark-grey w3-ripple">
-                            <h2 class="rightIncBtn"><i class='fa fa-plus-circle'></i></h2>
-                        </div>
-                    </div>
-                    <div class="w3-half w3-container w3-light-grey">
-                        <div onclick="decreaseRightScore();outputScore()" style="cursor: pointer" class="w3-fifth w3-container w3-dark-grey w3-ripple">
-                            <h2><i class='fa fa-minus-circle'></i></h2>
-                        </div>
-                    </div>
-                </div>
-            </div>
         </div>
 
+        <script>
+            // Toggle between showing and hiding the sidebar when clicking the menu icon
+            var mySidebar = document.getElementById("mySidebar");
 
+            function w3_open() {
+                if (mySidebar.style.display === 'block') {
+                    mySidebar.style.display = 'none';
+                    $('#mobBars').show();
+                    $('#mobClose').hide();
+                } else {
+                    mySidebar.style.display = 'block';
+                    $('#mobBars').hide();
+                    $('#mobClose').show();
+                }
+            }
 
-
-
-
-
-
-
-
-    </div>
-
-    <script>
-        // Toggle between showing and hiding the sidebar when clicking the menu icon
-        var mySidebar = document.getElementById("mySidebar");
-
-        function w3_open() {
-            if (mySidebar.style.display === 'block') {
-                mySidebar.style.display = 'none';
+            // Close the sidebar with the close button
+            function w3_close() {
+                mySidebar.style.display = "none";
                 $('#mobBars').show();
                 $('#mobClose').hide();
-            } else {
-                mySidebar.style.display = 'block';
-                $('#mobBars').hide();
-                $('#mobClose').show();
             }
-        }
 
-        // Close the sidebar with the close button
-        function w3_close() {
-            mySidebar.style.display = "none";
-            $('#mobBars').show();
-            $('#mobClose').hide();
-        }
-
-    </script>
+        </script>
 </body>
 
 </html>
