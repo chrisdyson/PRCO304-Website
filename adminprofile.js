@@ -10,8 +10,8 @@ var dbPassword = settings.dbPassword;
 var dbDatabase = settings.dbDatabase;
 
 var mailchimpInstance = 'us17',
-    listUniqueId = '5c25f14a2e',
-    mailchimpApiKey = '13b067c971e95a96e807a776f2d753db-us17';
+    listUniqueId = '',
+    mailchimpApiKey = '';
 
 exports.pageDataCreateProfile = function (req, res) {
 
