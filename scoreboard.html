@@ -71,21 +71,24 @@
     var leftSet = 0;
     var rightSet = 0;
     var fifthSetSwapped = false;
+    var whoServed = "";
 
     function startMatch() {
         $("#dialog-confirm").dialog({
             resizable: false,
             height: "auto",
-            width: 325,
+            width: 375,
             modal: true,
             buttons: {
                 "Player 1 (Left)": function() {
                     $(this).dialog("close");
                     $('.leftServBall').show();
+                    whoServed = "left";
                 },
                 "Player 2 (Right)": function() {
                     $(this).dialog("close");
                     $('.rightServBall').show();
+                    whoServed = "right";
                 }
             }
         });
@@ -98,6 +101,7 @@
         leftSet = 0;
         rightSet = 0;
         fifthSetSwapped = false;
+        whoServed = "";
         $('.leftServBall').hide();
         $('.rightServBall').hide();
         startMatch();
@@ -108,6 +112,20 @@
         rightScore = 0;
         $('.leftIncBtn').html("<i class='fa fa-plus-circle'></i>");
         $('.rightIncBtn').html("<i class='fa fa-plus-circle'></i>");
+
+        if (whoServed == "left") {
+            $('.leftServBall').show();
+            $('.rightServBall').hide();
+        } else if (whoServed == "right") {
+            $('.leftServBall').hide();
+            $('.rightServBall').show();
+        }
+
+        var origLSet = leftSet;
+        var origRSet = rightSet;
+        leftSet = origRSet;
+        rightSet = origLSet;
+        outputScore();
 
         if (leftSet == 3 && rightSet == 0) {
             resetMatch();
@@ -196,7 +214,16 @@
         checkLeftScore--;
         if (checkLeftScore >= 0) {
             leftScore--;
-            servingBallChange();
+            outputScore();
+            var points = leftScore + rightScore;
+            if (points % 2 == 1) {
+                $("img").toggle();
+            }
+            if (btnLeftInc.html != "<i class='fa fa-plus-circle'></i>" || btnRightInc.html != "<i class='fa fa-plus-circle'></i>") {
+                $('.leftIncBtn').html("<i class='fa fa-plus-circle'></i>");
+                $('.rightIncBtn').html("<i class='fa fa-plus-circle'></i>");
+            }
+            outputScore();
         }
     }
 
@@ -205,7 +232,16 @@
         checkRightScore--;
         if (checkRightScore >= 0) {
             rightScore--;
-            servingBallChange();
+            outputScore();
+            var points = leftScore + rightScore;
+            if (points % 2 == 1) {
+                $("img").toggle();
+            }
+            if (btnLeftInc.html != "<i class='fa fa-plus-circle'></i>" || btnRightInc.html != "<i class='fa fa-plus-circle'></i>") {
+                $('.leftIncBtn').html("<i class='fa fa-plus-circle'></i>");
+                $('.rightIncBtn').html("<i class='fa fa-plus-circle'></i>");
+            }
+            outputScore();
         }
     }
 
@@ -311,7 +347,7 @@
     <div class="w3-container w3-white w3-center" style="padding-top:75px">
 
         <div id="dialog-confirm" title="Who won service?">
-            <p class="w3-padding"><i class="fa fa-info-circle w3-xlarge"></i> Please select who won service for this match...</p>
+            <p class="w3-padding"><i class="fa fa-info-circle w3-xlarge"></i> <br>This is a best of 5 sets, up to 11 points match scoreboard. <br><br>Please select who won service for this match...</p>
         </div>
 
         <div style="-webkit-touch-callout: none;-webkit-user-select: none;-khtml-user-select: none;-moz-user-select: none;-ms-user-select: none;user-select: none" class="w3-row w3-hide-small">
@@ -368,15 +404,16 @@
                         <div class="w3-fifth w3-container">
                             &nbsp;
                         </div>
-                        <div onclick="increaseRightScore();outputScore()" style="cursor: pointer" class="w3-fifth w3-container w3-dark-grey w3-ripple">
-                            <h2 class="rightIncBtn"><i class='fa fa-plus-circle'></i></h2>
+                        <div onclick="decreaseRightScore();outputScore()" style="cursor: pointer" class="w3-fifth w3-container w3-dark-grey w3-ripple">
+                            <h2><i class='fa fa-minus-circle'></i></h2>
                         </div>
                         <div class="w3-fifth w3-container">
                             &nbsp;
                         </div>
-                        <div onclick="decreaseRightScore();outputScore()" style="cursor: pointer" class="w3-fifth w3-container w3-dark-grey w3-ripple">
-                            <h2><i class='fa fa-minus-circle'></i></h2>
+                        <div onclick="increaseRightScore();outputScore()" style="cursor: pointer" class="w3-fifth w3-container w3-dark-grey w3-ripple">
+                            <h2 class="rightIncBtn"><i class='fa fa-plus-circle'></i></h2>
                         </div>
+
                         <div class="w3-fifth w3-container">
                             &nbsp;
                         </div>
@@ -415,13 +452,13 @@
                         </div>
                     </td>
                     <td style="width:25%">
-                        <div onclick="increaseRightScore();outputScore()" style="cursor: pointer" class="w3-dark-grey w3-ripple">
-                            <h2 class="rightIncBtn"><i class='fa fa-plus-circle'></i></h2>
+                        <div onclick="decreaseRightScore();outputScore()" style="cursor: pointer" class="w3-dark-grey w3-ripple">
+                            <h2><i class='fa fa-minus-circle'></i></h2>
                         </div>
                     </td>
                     <td style="width:25%">
-                        <div onclick="decreaseRightScore();outputScore()" style="cursor: pointer" class="w3-dark-grey w3-ripple">
-                            <h2><i class='fa fa-minus-circle'></i></h2>
+                        <div onclick="increaseRightScore();outputScore()" style="cursor: pointer" class="w3-dark-grey w3-ripple">
+                            <h2 class="rightIncBtn"><i class='fa fa-plus-circle'></i></h2>
                         </div>
                     </td>
                 </tr>
