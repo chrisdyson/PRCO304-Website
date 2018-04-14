@@ -75,10 +75,15 @@ app.get('/messages', function (req, res) {
     res.sendFile(__dirname + '/messages.html');
 });
 
+app.get('/viewResults', function (req, res) {
+    res.sendFile(__dirname + '/viewResults.html');
+});
+
 var contacts = require('./contacts.js');
 var messages = require('./messages.js');
 var averagesResults = require('./avgres.js');
 var profile = require('./profile.js');
+var admin = require('./resetseason.js');
 var adminProfile = require('./adminprofile.js');
 var adminClub = require('./adminclub.js');
 var adminTeam = require('./adminteam.js');
@@ -86,6 +91,8 @@ var login = require('./login.js');
 var venues = require('./venues.js');
 var editProfile = require('./editprofile.js');
 var submitScore = require('./submitscore.js');
+var playerResults = require('./playerresults.js');
+var teamResults = require('./teamresults.js');
 
 app.get('/contactsData', function (req, res) {
     contacts.pageData(req, res);
@@ -113,6 +120,14 @@ app.get('/resultsData', function (req, res) {
 
 app.get('/profileData', function (req, res) {
     profile.pageData(req, res);
+});
+
+app.get('/resetSeason', function (req, res) {
+    admin.pageData(req, res);
+});
+
+app.post('/resetSeason', function (req, res) {
+    admin.pageDataPost(req, res);
 });
 
 app.get('/addProfile', function (req, res) {
@@ -209,4 +224,12 @@ app.post('/submitScoreScores', function (req, res) {
 
 app.post('/submitScorePost', function (req, res) {
     submitScore.pageDataPostSubmitScores(req, res);
+});
+
+app.get('/playerResults', function (req, res) {
+    playerResults.pageData(req, res);
+});
+
+app.get('/teamResults', function (req, res) {
+    teamResults.pageData(req, res);
 });

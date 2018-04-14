@@ -57,7 +57,7 @@
     }
     
     function resizeIframe(obj) {
-        obj.style.height = 25 + obj.contentWindow.document.body.scrollHeight + 'px';
+        obj.style.height = 25 + obj.contentWindow.document.body.scrollHeight + 'px'; 
     }
 </script>
 
@@ -154,7 +154,7 @@
     <div class="w3-container w3-white w3-center" style="padding-top:75px">
         <h2 class="w3-center">Averages</h2>
                 
-        <iframe style="border: none;width: 100%;" onload="resizeIframe(this)" src="averagesData"></iframe> 
+        <iframe style="border: none;width: 100%;" onload="resizeIframe(this);" src="averagesData"></iframe> 
         
     </div>
 

@@ -65,24 +65,29 @@ exports.pageDataSelectTeam = function (req, res) {
                     res.write('<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">');
                     res.write('<script src="http://code.jquery.com/jquery-latest.js" type="text/javascript"></script>');
 
+                    res.write('<script type="text/javascript">function setATname(selectAway){document.forms["form1"].awayTeamNameInput.value = selectAway.options[selectAway.options.selectedIndex].text;}</script>')
+
                     res.write('<div class="w3-container w3-card-4" style="width:85%;margin: 0 auto;">');
                     if (userType == "Captain") {
                         res.write('<h3 class="w3-center">Select Opponent</h3>');
-                        res.write('<form action="submitScorePlayer" method="post">');
+                        res.write('<form name="form1" action="submitScorePlayer" method="post">');
                         res.write('<div class="w3-white" style="padding:40px;">');
                         res.write('<b>Home Team </b><br> <select class="w3-select w3-white" name="" autocomplete="off">');
                         res.write('<option value="' + teamID + '" disabled selected>' + clubName + ' ' + teamName + '</option>');
+                        res.write('<input type="hidden" name="homeTeamName" value="' + clubName + ' ' + teamName + '">');
                         res.write('</select><br><br><br>');
                         res.write('<input type="hidden" name="homeTeam" value="' + teamID + '">');
-                        res.write('<b>Away Team </b><br> <select class="w3-select w3-white" name="awayTeam" autocomplete="off" required>');
+                        res.write('<b>Away Team </b><br> <select class="w3-select w3-white" name="awayTeam" onchange="javascript:setATname(this);" autocomplete="off" required>');
                         res.write('<option value="" disabled selected>Select...</option>');
 
                         for (i = 0; i < rows.length; i++) {
                             if (rows[i].teamID != teamID && rows[i].division == division) {
-                                res.write('<option value="' + rows[i].teamID + '">' + rows[i].clubName + ' ' + rows[i].teamName + '</option>');
+                                var team = rows[i].clubName + ' ' + rows[i].teamName;
+                                res.write('<option value="' + rows[i].teamID + '">' + team + '</option>');
                             }
                         }
                         res.write('</select><br><br><br>');
+                        res.write('<input type="hidden" name="awayTeamNameInput">');
                         res.write('<input id="createBtn" class="w3-center w3-button w3-ripple w3-light-grey" type="submit" value="Next">');
                     }
                     res.write('</div></form></div>');
@@ -216,6 +221,8 @@ exports.pageDataSelectPlayer = function (req, res) {
                             res.write('<br>');
                             res.write('<input type="hidden" name="homeTeam" value="' + homeTeamID + '">');
                             res.write('<input type="hidden" name="awayTeam" value="' + awayTeamID + '">');
+                            res.write('<input type="hidden" name="homeTeamName" value="' + post.homeTeamName + '">');
+                            res.write('<input type="hidden" name="awayTeamName" value="' + post.awayTeamNameInput + '">');
                             res.write('<input id="createBtn" class="w3-center w3-button w3-ripple w3-light-grey" type="submit" value="Next">');
                             res.write('</div></form></div>');
                             res.end();
@@ -368,7 +375,7 @@ exports.pageDataEnterScores = function (req, res) {
                             res.write('<tr><td>C</td><td style="text-align:left">' + Cname + '</td><td style="text-align:right"><input onclick="getScore()" class="w3-radio" type="radio" name="CvX" value="' + C + '" required></td><td><input onclick="getScore()" class="w3-radio" type="radio" name="CvX" value="' + X + '" required></td><td style="text-align:right">' + Xname + '</td><td>X</td></tr>');
                             res.write('<tr><td>A</td><td style="text-align:left">' + Aname + '</td><td style="text-align:right"><input onclick="getScore()" class="w3-radio" type="radio" name="AvY" value="' + A + '" required></td><td><input onclick="getScore()" class="w3-radio" type="radio" name="AvY" value="' + Y + '" required></td><td style="text-align:right">' + Yname + '</td><td>Y</td></tr>');
                             res.write('<tr><td style="vertical-align:middle">D</td><td style="text-align:left">' + DHname1 + '<br>' + DHname2 + '</td><td style="text-align:right;vertical-align:middle"><input onclick="getScore()" class="w3-radio" type="radio" name="DvD" value="' + A + '" required></td><td style="vertical-align:middle"><input onclick="getScore()" class="w3-radio" type="radio" name="DvD" value="' + X + '" required></td><td style="text-align:right">' + DAname1 + '<br>' + DAname2 + '</td><td style="vertical-align:middle">D</td></tr>');
-                            
+
                             res.write('<tr style="background-color:transparent;border:none"><td></td><td></td><td class="w3-card-4 w3-large w3-padding" id="tdHomeScore" style="text-align:center"></td><td style="text-align:center" id="tdAwayScore" class="w3-card-4 w3-large w3-padding" ></td><td></td><td></td></tr>');
                             res.write('</table>');
 
@@ -414,12 +421,23 @@ exports.pageDataEnterScores = function (req, res) {
                             res.write('<input type="hidden" name="homeTeam" value="' + homeTeamID + '">');
                             res.write('<input type="hidden" name="awayTeam" value="' + awayTeamID + '">');
 
+                            res.write('<input type="hidden" name="homeTeamName" value="' + post.homeTeamName + '">');
+                            res.write('<input type="hidden" name="awayTeamName" value="' + post.awayTeamName + '">');
+
                             res.write('<input type="hidden" name="playerA" value="' + A + '">');
                             res.write('<input type="hidden" name="playerB" value="' + B + '">');
                             res.write('<input type="hidden" name="playerC" value="' + C + '">');
                             res.write('<input type="hidden" name="playerX" value="' + X + '">');
                             res.write('<input type="hidden" name="playerY" value="' + Y + '">');
                             res.write('<input type="hidden" name="playerZ" value="' + Z + '">');
+
+                            res.write('<input type="hidden" name="playerAName" value="' + Aname + '">');
+                            res.write('<input type="hidden" name="playerBName" value="' + Bname + '">');
+                            res.write('<input type="hidden" name="playerCName" value="' + Cname + '">');
+                            res.write('<input type="hidden" name="playerXName" value="' + Xname + '">');
+                            res.write('<input type="hidden" name="playerYName" value="' + Yname + '">');
+                            res.write('<input type="hidden" name="playerZName" value="' + Zname + '">');
+
 
                             res.write('<input id="createBtn" class="w3-center w3-button w3-ripple w3-light-grey" type="submit" value="Submit">');
                             res.write('</div></form></div>');
@@ -486,6 +504,14 @@ exports.pageDataPostSubmitScores = function (req, res) {
             var Y = mysql.escape(post.playerY);
             var Z = mysql.escape(post.playerZ);
 
+            var Aname = mysql.escape(post.playerAName);
+            var Bname = mysql.escape(post.playerBName);
+            var Cname = mysql.escape(post.playerCName);
+
+            var Xname = mysql.escape(post.playerXName);
+            var Yname = mysql.escape(post.playerYName);
+            var Zname = mysql.escape(post.playerZName);
+
             var AvX = mysql.escape(post.AvX);
             var AvY = mysql.escape(post.AvY);
             var AvZ = mysql.escape(post.AvZ);
@@ -500,60 +526,185 @@ exports.pageDataPostSubmitScores = function (req, res) {
             var homeTeamID = mysql.escape(post.homeTeam);
             var awayTeamID = mysql.escape(post.awayTeam);
 
+            var homeTeamName = mysql.escape(post.homeTeamName);
+            var awayTeamName = mysql.escape(post.awayTeamName);
+
             var homePoints = 0;
             var awayPoints = 0;
 
-            if (AvX == A || AvX == B || AvX == C) {
+            connection.connect();
+
+            if (AvX == A) {
                 homePoints = homePoints + 1;
-            } else if (AvX == X || AvX == Y || AvX == Z) {
+                connection.query("INSERT INTO playerResults (homePlayer, homePlayerName, homeTeam, result, awayPlayer, awayPlayerName, awayTeam) VALUES (" + A + "," + Aname + "," + homeTeamName + ",'beat'," + X + "," + Xname + "," + awayTeamName + ")",
+                    function (err) {
+                        if (err) {
+                            console.log('Error while performing Query.');
+                        }
+                    });
+            } else if (AvX == X) {
+                awayPoints = awayPoints + 1;
+                connection.query("INSERT INTO playerResults (homePlayer, homePlayerName, homeTeam, result, awayPlayer, awayPlayerName, awayTeam) VALUES (" + A + "," + Aname + "," + homeTeamName + ",'lost to'," + X + "," + Xname + "," + awayTeamName + ")",
+                    function (err) {
+                        if (err) {
+                            console.log('Error while performing Query.');
+                        }
+                    });
+            }
+
+            if (AvY == A) {
+                homePoints = homePoints + 1;
+                connection.query("INSERT INTO playerResults (homePlayer, homePlayerName, homeTeam, result, awayPlayer, awayPlayerName, awayTeam) VALUES (" + A + "," + Aname + "," + homeTeamName + ",'beat'," + Y + "," + Yname + "," + awayTeamName + ")",
+                    function (err) {
+                        if (err) {
+                            console.log('Error while performing Query.');
+                        }
+                    });
+            } else if (AvY == Y) {
+                awayPoints = awayPoints + 1;
+                connection.query("INSERT INTO playerResults (homePlayer, homePlayerName, homeTeam, result, awayPlayer, awayPlayerName, awayTeam) VALUES (" + A + "," + Aname + "," + homeTeamName + ",'lost to'," + Y + "," + Yname + "," + awayTeamName + ")",
+                    function (err) {
+                        if (err) {
+                            console.log('Error while performing Query.');
+                        }
+                    });
+            }
+
+            if (AvZ == A) {
+                homePoints = homePoints + 1;
+                connection.query("INSERT INTO playerResults (homePlayer, homePlayerName, homeTeam, result, awayPlayer, awayPlayerName, awayTeam) VALUES (" + A + "," + Aname + "," + homeTeamName + ",'beat'," + Z + "," + Zname + "," + awayTeamName + ")",
+                    function (err) {
+                        if (err) {
+                            console.log('Error while performing Query.');
+                        }
+                    });
+            } else if (AvZ == Z) {
+                awayPoints = awayPoints + 1;
+                connection.query("INSERT INTO playerResults (homePlayer, homePlayerName, homeTeam, result, awayPlayer, awayPlayerName, awayTeam) VALUES (" + A + "," + Aname + "," + homeTeamName + ",'lost to'," + Z + "," + Zname + "," + awayTeamName + ")",
+                    function (err) {
+                        if (err) {
+                            console.log('Error while performing Query.');
+                        }
+                    });
+            } else if (AvZ == "playedUp") {
                 awayPoints = awayPoints + 1;
             }
 
-            if (AvY == A || AvY == B || AvY == C) {
+            if (BvX == B) {
                 homePoints = homePoints + 1;
-            } else if (AvY == X || AvY == Y || AvY == Z) {
+                connection.query("INSERT INTO playerResults (homePlayer, homePlayerName, homeTeam, result, awayPlayer, awayPlayerName, awayTeam) VALUES (" + B + "," + Bname + "," + homeTeamName + ",'beat'," + X + "," + Xname + "," + awayTeamName + ")",
+                    function (err) {
+                        if (err) {
+                            console.log('Error while performing Query.');
+                        }
+                    });
+            } else if (BvX == X) {
+                awayPoints = awayPoints + 1;
+                connection.query("INSERT INTO playerResults (homePlayer, homePlayerName, homeTeam, result, awayPlayer, awayPlayerName, awayTeam) VALUES (" + B + "," + Bname + "," + homeTeamName + ",'lost to'," + X + "," + Xname + "," + awayTeamName + ")",
+                    function (err) {
+                        if (err) {
+                            console.log('Error while performing Query.');
+                        }
+                    });
+            }
+
+            if (BvY == B) {
+                homePoints = homePoints + 1;
+                connection.query("INSERT INTO playerResults (homePlayer, homePlayerName, homeTeam, result, awayPlayer, awayPlayerName, awayTeam) VALUES (" + B + "," + Bname + "," + homeTeamName + ",'beat'," + Y + "," + Yname + "," + awayTeamName + ")",
+                    function (err) {
+                        if (err) {
+                            console.log('Error while performing Query.');
+                        }
+                    });
+            } else if (BvY == Y) {
+                awayPoints = awayPoints + 1;
+                connection.query("INSERT INTO playerResults (homePlayer, homePlayerName, homeTeam, result, awayPlayer, awayPlayerName, awayTeam) VALUES (" + B + "," + Bname + "," + homeTeamName + ",'lost to'," + Y + "," + Yname + "," + awayTeamName + ")",
+                    function (err) {
+                        if (err) {
+                            console.log('Error while performing Query.');
+                        }
+                    });
+            }
+
+            if (BvZ == B) {
+                homePoints = homePoints + 1;
+                connection.query("INSERT INTO playerResults (homePlayer, homePlayerName, homeTeam, result, awayPlayer, awayPlayerName, awayTeam) VALUES (" + B + "," + Bname + "," + homeTeamName + ",'beat'," + Z + "," + Zname + "," + awayTeamName + ")",
+                    function (err) {
+                        if (err) {
+                            console.log('Error while performing Query.');
+                        }
+                    });
+            } else if (BvZ == Z) {
+                awayPoints = awayPoints + 1;
+                connection.query("INSERT INTO playerResults (homePlayer, homePlayerName, homeTeam, result, awayPlayer, awayPlayerName, awayTeam) VALUES (" + B + "," + Bname + "," + homeTeamName + ",'lost to'," + Z + "," + Zname + "," + awayTeamName + ")",
+                    function (err) {
+                        if (err) {
+                            console.log('Error while performing Query.');
+                        }
+                    });
+            } else if (BvZ == "playedUp") {
                 awayPoints = awayPoints + 1;
             }
 
-            if (AvZ == A || AvZ == B || AvZ == C || AvZ == "playedUp") {
+            if (CvX == C) {
                 homePoints = homePoints + 1;
-            } else if (AvZ == X || AvZ == Y || AvZ == Z || AvZ == "playedUp") {
+                connection.query("INSERT INTO playerResults (homePlayer, homePlayerName, homeTeam, result, awayPlayer, awayPlayerName, awayTeam) VALUES (" + C + "," + Cname + "," + homeTeamName + ",'beat'," + X + "," + Xname + "," + awayTeamName + ")",
+                    function (err) {
+                        if (err) {
+                            console.log('Error while performing Query.');
+                        }
+                    });
+            } else if (CvX == "playedUp") {
+                homePoints = homePoints + 1;
+            } else if (CvX == X) {
                 awayPoints = awayPoints + 1;
+                connection.query("INSERT INTO playerResults (homePlayer, homePlayerName, homeTeam, result, awayPlayer, awayPlayerName, awayTeam) VALUES (" + C + "," + Cname + "," + homeTeamName + ",'lost to'," + X + "," + Xname + "," + awayTeamName + ")",
+                    function (err) {
+                        if (err) {
+                            console.log('Error while performing Query.');
+                        }
+                    });
             }
 
-            if (BvX == A || BvX == B || BvX == C) {
+            if (CvY == C) {
                 homePoints = homePoints + 1;
-            } else if (BvX == X || BvX == Y || BvX == Z) {
+                connection.query("INSERT INTO playerResults (homePlayer, homePlayerName, homeTeam, result, awayPlayer, awayPlayerName, awayTeam) VALUES (" + C + "," + Cname + "," + homeTeamName + ",'beat'," + Y + "," + Yname + "," + awayTeamName + ")",
+                    function (err) {
+                        if (err) {
+                            console.log('Error while performing Query.');
+                        }
+                    });
+            } else if (CvY == "playedUp") {
+                homePoints = homePoints + 1;
+            } else if (CvY == Y) {
                 awayPoints = awayPoints + 1;
+                connection.query("INSERT INTO playerResults (homePlayer, homePlayerName, homeTeam, result, awayPlayer, awayPlayerName, awayTeam) VALUES (" + C + "," + Cname + "," + homeTeamName + ",'lost to'," + Y + "," + Yname + "," + awayTeamName + ")",
+                    function (err) {
+                        if (err) {
+                            console.log('Error while performing Query.');
+                        }
+                    });
             }
 
-            if (BvY == A || BvY == B || BvY == C) {
+            if (CvZ == C) {
                 homePoints = homePoints + 1;
-            } else if (BvY == X || BvY == Y || BvY == Z) {
+                connection.query("INSERT INTO playerResults (homePlayer, homePlayerName, homeTeam, result, awayPlayer, awayPlayerName, awayTeam) VALUES (" + C + "," + Cname + "," + homeTeamName + ",'beat'," + Z + "," + Zname + "," + awayTeamName + ")",
+                    function (err) {
+                        if (err) {
+                            console.log('Error while performing Query.');
+                        }
+                    });
+            } else if (CvZ == "playedUp") {
+                homePoints = homePoints + 1;
+            } else if (CvZ == Z) {
                 awayPoints = awayPoints + 1;
-            }
-
-            if (BvZ == A || BvZ == B || BvZ == C || BvZ == "playedUp") {
-                homePoints = homePoints + 1;
-            } else if (BvZ == X || BvZ == Y || BvZ == Z || BvZ == "playedUp") {
-                awayPoints = awayPoints + 1;
-            }
-
-            if (CvX == A || CvX == B || CvX == C || CvX == "playedUp") {
-                homePoints = homePoints + 1;
-            } else if (CvX == X || CvX == Y || CvX == Z || CvX == "playedUp") {
-                awayPoints = awayPoints + 1;
-            }
-
-            if (CvY == A || CvY == B || CvY == C || CvY == "playedUp") {
-                homePoints = homePoints + 1;
-            } else if (CvY == X || CvY == Y || CvY == Z || CvY == "playedUp") {
-                awayPoints = awayPoints + 1;
-            }
-
-            if (CvZ == A || CvZ == B || CvZ == C || CvZ == "playedUp") {
-                homePoints = homePoints + 1;
-            } else if (CvZ == X || CvZ == Y || CvZ == Z || CvZ == "playedUp") {
+                connection.query("INSERT INTO playerResults (homePlayer, homePlayerName, homeTeam, result, awayPlayer, awayPlayerName, awayTeam) VALUES (" + C + "," + Cname + "," + homeTeamName + ",'lost to'," + Z + "," + Zname + "," + awayTeamName + ")",
+                    function (err) {
+                        if (err) {
+                            console.log('Error while performing Query.');
+                        }
+                    });
+            } else if (CvZ == "playedUp") {
                 awayPoints = awayPoints + 1;
             }
 
@@ -562,8 +713,6 @@ exports.pageDataPostSubmitScores = function (req, res) {
             } else if (DvD == X) {
                 awayPoints = awayPoints + 1;
             }
-
-            connection.connect();
 
             connection.query("UPDATE user SET gamesPlayed = gamesPlayed+3 WHERE userID = " + A + " OR userID = " + B + " OR userID = " + C,
                 function (err) {
@@ -620,6 +769,12 @@ exports.pageDataPostSubmitScores = function (req, res) {
                             console.log('Error while performing Query.');
                         }
                     });
+                connection.query("INSERT INTO teamResults (homeTeam, homeTeamName, result, awayTeam, awayTeamName, homeScore, awayScore) VALUES (" + homeTeamID + "," + homeTeamName + ",'drew to'," + awayTeamID + "," + awayTeamName + "," + homePoints + "," + awayPoints + ")",
+                    function (err) {
+                        if (err) {
+                            console.log('Error while performing Query.');
+                        }
+                    });
             } else if (homePoints < awayPoints) {
                 connection.query("UPDATE teams SET teamWins = teamWins+1 WHERE teamID = " + awayTeamID,
                     function (err) {
@@ -642,6 +797,12 @@ exports.pageDataPostSubmitScores = function (req, res) {
                 connection.query("UPDATE teams SET points = points+" + homePoints + " WHERE teamID = " + homeTeamID,
                     function (err) {
                         if (err) { //error
+                            console.log('Error while performing Query.');
+                        }
+                    });
+                connection.query("INSERT INTO teamResults (homeTeam, homeTeamName, result, awayTeam, awayTeamName, homeScore, awayScore) VALUES (" + homeTeamID + "," + homeTeamName + ",'lost to'," + awayTeamID + "," + awayTeamName + "," + homePoints + "," + awayPoints + ")",
+                    function (err) {
+                        if (err) {
                             console.log('Error while performing Query.');
                         }
                     });
@@ -668,6 +829,13 @@ exports.pageDataPostSubmitScores = function (req, res) {
                     function (err) {
                         if (err) { //error
                             console.log('Error while performing Query.');
+                        }
+                    });
+                connection.query("INSERT INTO teamResults (homeTeam, homeTeamName, result, awayTeam, awayTeamName, homeScore, awayScore) VALUES (" + homeTeamID + "," + homeTeamName + ",'beat'," + awayTeamID + "," + awayTeamName + "," + homePoints + "," + awayPoints + ")",
+                    function (err) {
+                        if (err) {
+                            console.log('Error while performing Query.');
+                            console.log(err);
                         }
                     });
             }

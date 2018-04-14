@@ -236,9 +236,18 @@ exports.pageDataDeleteClubPost = function (req, res) {
             connection.query("DELETE FROM clubs WHERE clubID = " + mysql.escape(post.club),
                 function (err, rows, fields) {
                     if (!err) {
-                        connection.end();
-                        res.write('<script>window.top.location.href = "/admin";</script>');
-                        return res.end();
+                        connection.query("DELETE FROM teams WHERE clubID = " + mysql.escape(post.club),
+                            function (err, rows, fields) {
+                                if (!err) {
+                                    connection.end();
+                                    res.write('<script>window.top.location.href = "/admin";</script>');
+                                    return res.end();
+                                } else { //error
+                                    console.log('Error while performing Query.');
+                                    res.end();
+                                    connection.end();
+                                }
+                            });
                     } else { //error
                         console.log('Error while performing Query.');
                         res.end();

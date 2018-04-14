@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html>
-<title>TT Portal (Admin)</title>
+<title>TT Portal</title>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 
@@ -56,26 +56,27 @@
         }
     }
 
+    $.urlParam = function(name) {
+        var results = new RegExp('[\?&]' + name + '=([^&#]*)').exec(window.location.href);
+        return results[1] || 0;
+    }
+
     window.onload = function() {
-        if (localStorage.username) {
-            //logged in
-            var username = localStorage.username;
-            
-            document.getElementById('resetSeason').src = "resetSeason?u=" + username;
-            document.getElementById('addProfile').src = "addProfile?u=" + username;
-            document.getElementById('addClub').src = "addClub?u=" + username;
-            document.getElementById('addTeam').src = "addTeam?u=" + username;
-            document.getElementById('deleteProfile').src = "deleteProfile?u=" + username;
-            document.getElementById('deleteClub').src = "deleteClub?u=" + username;
-            document.getElementById('deleteTeam').src = "deleteTeam?u=" + username;
-        } else {
-            //Not logged in
-            window.location.replace('/');
+        var url = $.urlParam('id');
+        var type = url.substring(0, 1);
+        var id = url.substring(1);
+
+        if (type == 't') {
+            document.getElementById('viewDataIF').src = "teamResults?t=" + id;
+        } else if (type == 'u') {
+            document.getElementById('viewDataIF').src = "playerResults?u=" + id;
         }
+        
+        console.log(type + " " + id)
     };
 
     function resizeIframe(obj) {
-        obj.style.height = 25 + obj.contentWindow.document.body.scrollHeight + 'px';
+        obj.style.height = 75 + obj.contentWindow.document.body.scrollHeight + 'px';
     }
 
 </script>
@@ -171,19 +172,9 @@
     </div>
 
     <div class="w3-container w3-white w3-center" style="padding-top:75px">
-        
-        <div id="adminNav" class="w3-hide-small w3-right w3-card-4" style="position: fixed;top:51px;right:0px;border-radius: 0 0 0 10px;">
-        <a style="cursor: pointer;text-decoration: none;border-radius: 0 0 0 10px;" class="w3-tag w3-dark-grey w3-padding" onclick="$('html, body').animate({ scrollTop: $('#resetSeason').offset().top -52 }, 1000);">Season Reset</a><a style="cursor: pointer;text-decoration: none;" class="w3-tag w3-dark-grey w3-padding" onclick="$('html, body').animate({ scrollTop: $('#addProfile').offset().top -52 }, 1000);">Create User</a><a style="cursor: pointer;text-decoration: none" class="w3-tag w3-dark-grey w3-padding" onclick="$('html, body').animate({ scrollTop: $('#addClub').offset().top -52  }, 1000);">Create Club</a><a style="cursor: pointer;text-decoration: none" class="w3-tag w3-dark-grey w3-padding" onclick="$('html, body').animate({ scrollTop: $('#addTeam').offset().top -52 }, 1000);">Create Team</a><a style="cursor: pointer;text-decoration: none" class="w3-tag w3-dark-grey w3-padding" onclick="$('html, body').animate({ scrollTop: $('#deleteProfile').offset().top -52 }, 1000);">Delete User</a><a style="cursor: pointer;text-decoration: none" class="w3-tag w3-dark-grey w3-padding" onclick="$('html, body').animate({ scrollTop: $('#deleteClub').offset().top -52 }, 1000);">Delete Club</a><a style="cursor: pointer;text-decoration: none" class="w3-tag w3-dark-grey w3-padding" onclick="$('html, body').animate({ scrollTop: $('#deleteTeam').offset().top -52 }, 1000);">Delete Team</a>
-        </div><br>
-        <h2 class="w3-center">Admin</h2>
-        <iframe id="resetSeason" style="border: none;width: 100%" onload="resizeIframe(this)" src=""></iframe>
-        <iframe id="addProfile" style="border: none;width: 100%" onload="resizeIframe(this)" src=""></iframe>
-        <iframe id="addClub" style="border: none;width: 100%" onload="resizeIframe(this)" src=""></iframe>
-        <iframe id="addTeam" style="border: none;width: 100%" onload="resizeIframe(this)" src=""></iframe>
-        <iframe id="deleteProfile" style="border: none;width: 100%" onload="resizeIframe(this)" src=""></iframe>
-        <iframe id="deleteClub" style="border: none;width: 100%" onload="resizeIframe(this)" src=""></iframe>
-        <iframe id="deleteTeam" style="border: none;width: 100%" onload="resizeIframe(this)" src=""></iframe>
-        <br><br>
+
+        <iframe id="viewDataIF" style="border: none;width: 100%;" src="" onload="resizeIframe(this);"></iframe>
+
     </div>
 
     <script>

@@ -16,7 +16,7 @@ exports.pageDataAverages = function (req, res) {
         database: dbDatabase
     });
     connection.connect();
-    connection.query("SELECT * FROM user,teams,clubs,league WHERE user.teamID=teams.teamID AND teams.clubID = clubs.clubID AND clubs.leagueID = league.leagueID ORDER BY division ASC, percentage DESC",
+    connection.query("SELECT * FROM user,teams,clubs,league WHERE user.teamID=teams.teamID AND teams.clubID = clubs.clubID AND clubs.leagueID = league.leagueID ORDER BY division ASC, percentage DESC, firstName ASC",
         function (err, rows, fields) {
             if (!err) {
                 if (rows != '') {
@@ -42,7 +42,7 @@ exports.pageDataAverages = function (req, res) {
                                 var percentConv = percent.toFixed(2);
                             }
                             if (rows[i].division == j) {
-                                res.write('<tr><td style="vertical-align:middle" class="w3-center">' + pos + '</td><td style="vertical-align:middle" class="w3-center w3-small w3-hide-medium w3-hide-large">' + rows[i].firstName + ' ' + rows[i].lastName + '</td><td style="vertical-align:middle" class="w3-center w3-hide-small" >' + rows[i].firstName + ' ' + rows[i].lastName + '</td><td style="vertical-align:middle" class="w3-center w3-hide-small">' + rows[i].clubName + ' ' + rows[i].teamName + '</td><td style="vertical-align:middle" class="w3-center">' + rows[i].gamesPlayed + '</td><td style="vertical-align:middle" class="w3-center">' + rows[i].wins + '</td><td style="vertical-align:middle" class="w3-center">' + percentConv + '%</td></tr>');
+                                res.write('<tr><td style="vertical-align:middle" class="w3-center">' + pos + '</td><td style="vertical-align:middle" class="w3-center w3-small w3-hide-medium w3-hide-large"><a target="_parent" href="/viewResults?id=u'+rows[i].userID+'">' + rows[i].firstName + ' ' + rows[i].lastName + '</a></td><td style="vertical-align:middle" class="w3-center w3-hide-small"><a target="_parent" href="/viewResults?id=u'+rows[i].userID+'">' + rows[i].firstName + ' ' + rows[i].lastName + '</a></td><td style="vertical-align:middle" class="w3-center w3-hide-small"><a target="_parent" href="/viewResults?id=t'+rows[i].teamID+'">' + rows[i].clubName + ' ' + rows[i].teamName + '</a></td><td style="vertical-align:middle" class="w3-center">' + rows[i].gamesPlayed + '</td><td style="vertical-align:middle" class="w3-center">' + rows[i].wins + '</td><td style="vertical-align:middle" class="w3-center">' + percentConv + '%</td></tr>');
                                 pos = pos + 1;
                             }
                         }
@@ -98,7 +98,7 @@ exports.pageDataResults = function (req, res) {
 
                         for (i = 0; i < rows.length; i++) {
                             if (rows[i].division == j) {
-                                res.write('<tr><td style="vertical-align:middle" class="w3-center">' + pos + '</td><td style="vertical-align:middle" class="w3-center">' + rows[i].clubName + ' ' + rows[i].teamName + '</td><td style="vertical-align:middle" class="w3-center">' + rows[i].teamGamesPlayed + '</td><td style="vertical-align:middle" class="w3-center">' + rows[i].teamWins + '</td><td class="w3-center" style="vertical-align:middle">' + rows[i].teamDraws + '</td><td style="vertical-align:middle" class="w3-center">' + rows[i].teamLosses + '</td><td style="vertical-align:middle" class="w3-center">' + rows[i].points + '</td></tr>');
+                                res.write('<tr><td style="vertical-align:middle" class="w3-center">' + pos + '</td><td style="vertical-align:middle" class="w3-center"><a target="_parent" href="/viewResults?id=t'+rows[i].teamID+'">' + rows[i].clubName + ' ' + rows[i].teamName + '</a></td><td style="vertical-align:middle" class="w3-center">' + rows[i].teamGamesPlayed + '</td><td style="vertical-align:middle" class="w3-center">' + rows[i].teamWins + '</td><td class="w3-center" style="vertical-align:middle">' + rows[i].teamDraws + '</td><td style="vertical-align:middle" class="w3-center">' + rows[i].teamLosses + '</td><td style="vertical-align:middle" class="w3-center">' + rows[i].points + '</td></tr>');
                                 pos = pos + 1;
                             }
                         }
