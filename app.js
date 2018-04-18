@@ -84,6 +84,7 @@ var messages = require('./messages.js');
 var averagesResults = require('./avgres.js');
 var profile = require('./profile.js');
 var admin = require('./resetseason.js');
+var passReset = require('./adminPasswordReset.js');
 var adminProfile = require('./adminprofile.js');
 var adminClub = require('./adminclub.js');
 var adminTeam = require('./adminteam.js');
@@ -120,6 +121,14 @@ app.get('/resultsData', function (req, res) {
 
 app.get('/profileData', function (req, res) {
     profile.pageData(req, res);
+});
+
+app.get('/userPassReset', function (req, res) {
+    passReset.pageData(req, res);
+});
+
+app.post('/userPassReset', function (req, res) {
+    passReset.pageDataPost(req, res);
 });
 
 app.get('/resetSeason', function (req, res) {
