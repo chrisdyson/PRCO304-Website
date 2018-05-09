@@ -79,7 +79,27 @@ exports.pageDataEditPasswordPost = function (req, res) {
                 database: dbDatabase
             });
             connection.connect();
-            connection.query("UPDATE user SET password = " + mysql.escape(post.password) + " WHERE username = " + mysql.escape(post.username),
+            
+            //----------------------------------------------------------
+            //HASHING PASSWORDS
+            
+            //var bcrypt = require('bcrypt'); //require NodeJS Module
+            
+            //ON SIGNUP/ PASSWORD CHANGE
+            //Generate a salt
+            //var salt = bcrypt.genSaltSync(10);
+            //Hash the password with the salt
+            //var hash = bcrypt.hashSync(post.password, salt);
+            //Save hash to DB
+
+            //ON LOGIN
+            //Load the password hash from DB
+            //Let's assume it's stored in a variable called `hash`
+            //bcrypt.compareSync("my password", hash); // true
+            //bcrypt.compareSync("not my password", hash); // false
+            //----------------------------------------------------------
+
+            connection.query("UPDATE user SET password = " + hash + " WHERE username = " + mysql.escape(post.username),
                 function (err, rows, fields) {
                     if (!err) {
                         connection.end();

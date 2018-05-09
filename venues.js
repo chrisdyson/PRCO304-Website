@@ -23,18 +23,10 @@ exports.pageDataView = function (req, res) {
                     res.writeHead(200, {
                         'Content-Type': 'text/html'
                     });
-                    res.write('<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Raleway">');
-                    res.write('<link rel="stylesheet" href="w3.css">');
-                    res.write('<table style="width: 95%;margin: 0 auto;" class="w3-table-all w3-card-4"><tr><th style="width:50%">Club</th><th style="width:50%">Location</th></tr>');
-                    for (i = 0; i < rows.length; i++) {
-                        res.write('<tr><td>' + rows[i].clubName + '</td><td>' + rows[i].clubLocation + '</td></tr>');
-                    }
-                    res.write('</table>');
-                    res.write('<br>')
-                    res.write('<script>function initMap() {')
+                    res.write('<script>var infowindows = []; var markers = []; function initMap() {')
                     res.write('var mapOptions = {center: new google.maps.LatLng(50.379946, -4.139527),zoom: 13,mapTypeId: google.maps.MapTypeId.HYBRID};')
                     res.write('var map = new google.maps.Map(document.getElementById("map"), mapOptions);');
-                    res.write('var markers = [];var contents = [];var infowindows = [];')
+                    res.write('var contents = [];')
 
                     var j = 0;
                     for (; rows[j];) {
@@ -46,6 +38,15 @@ exports.pageDataView = function (req, res) {
                     }
 
                     res.write('} </script>');
+                    res.write('<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Raleway">');
+                    res.write('<link rel="stylesheet" href="w3.css">');
+                    res.write('<table style="width: 95%;margin: 0 auto;" class="w3-table-all w3-card-4"><tr><th style="width:50%">Club</th><th style="width:50%">Location</th></tr>');
+                    for (i = 0; i < rows.length; i++) {
+                        res.write('<tr><td class="w3-small w3-hide-medium w3-hide-large">' + rows[i].clubName + '</td><td class="w3-hide-small">' + rows[i].clubName + '</td><td class="w3-small w3-hide-medium w3-hide-large"><a href="#" onclick="for (j = 0; j < infowindows.length; j++) { infowindows[j].close(); } google.maps.event.trigger(markers['+i+'], \'click\')">' + rows[i].clubLocation + '</a></td><td class="w3-hide-small"><a href="#" onclick="for (j = 0; j < infowindows.length; j++) { infowindows[j].close(); } google.maps.event.trigger(markers['+i+'], \'click\')">' + rows[i].clubLocation + '</a></td></tr>');
+                    }
+                    res.write('</table>');
+                    res.write('<br>')
+
                     res.write('<script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCtssf_r1Vdlc8hqU7VE-ThqgabZ-4rE2I&callback=initMap"></script>');
                     res.write('<div class="w3-round-large w3-card-4" style="height: 600px;width: 95%;margin: 0 auto;" id="map"></div>');
                     res.end();

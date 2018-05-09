@@ -39,10 +39,10 @@ exports.pageDataAverages = function (req, res) {
                             if (percent == null) {
                                 var percentConv = 0;
                             } else {
-                                var percentConv = percent.toFixed(2);
+                                var percentConv = percent;
                             }
                             if (rows[i].division == j) {
-                                res.write('<tr><td style="vertical-align:middle" class="w3-center">' + pos + '</td><td style="vertical-align:middle" class="w3-center w3-small w3-hide-medium w3-hide-large"><a target="_parent" href="/viewResults?id=u'+rows[i].userID+'">' + rows[i].firstName + ' ' + rows[i].lastName + '</a></td><td style="vertical-align:middle" class="w3-center w3-hide-small"><a target="_parent" href="/viewResults?id=u'+rows[i].userID+'">' + rows[i].firstName + ' ' + rows[i].lastName + '</a></td><td style="vertical-align:middle" class="w3-center w3-hide-small"><a target="_parent" href="/viewResults?id=t'+rows[i].teamID+'">' + rows[i].clubName + ' ' + rows[i].teamName + '</a></td><td style="vertical-align:middle" class="w3-center">' + rows[i].gamesPlayed + '</td><td style="vertical-align:middle" class="w3-center">' + rows[i].wins + '</td><td style="vertical-align:middle" class="w3-center">' + percentConv + '%</td></tr>');
+                                res.write('<tr><td style="vertical-align:middle" class="w3-center">' + pos + '</td><td style="vertical-align:middle" class="w3-center w3-small w3-hide-medium w3-hide-large"><a target="_parent" href="/viewResults?id=u'+rows[i].userID+'">' + rows[i].firstName + ' ' + rows[i].lastName + '</a></td><td style="vertical-align:middle" class="w3-center w3-hide-small"><a target="_parent" href="/viewResults?id=u'+rows[i].userID+'">' + rows[i].firstName + ' ' + rows[i].lastName + '</a></td><td style="vertical-align:middle" class="w3-center w3-hide-small"><a target="_parent" href="/viewResults?id=t'+rows[i].teamID+'">' + rows[i].clubName + ' ' + rows[i].teamName + '</a></td><td style="vertical-align:middle" class="w3-center">' + rows[i].gamesPlayed + '</td><td style="vertical-align:middle" class="w3-center">' + rows[i].wins + '</td><td style="vertical-align:middle" class="w3-center">' + percentConv.toFixed(2) + '%</td></tr>');
                                 pos = pos + 1;
                             }
                         }
