@@ -63,6 +63,7 @@ exports.pageDataCreateProfile = function (req, res) {
                         res.write('<b>First Name <span class="w3-text-red">*</span></b> <input id="txtCreateFName" class="w3-input w3-left" type="text" name="firstName" autocomplete="off" required><br><br><br><br>');
                         res.write('<b>Last Name <span class="w3-text-red">*</span></b> <input id="txtCreateLName" class="w3-input w3-left" type="text" name="lastName" autocomplete="off" required><br><br><br><br>');
                         res.write('<b>Email <span class="w3-text-red">*</span></b> <input id="txtCreateEmail" class="w3-input w3-left" type="email" name="email" autocomplete="off" required><br><br><br><br>');
+                        res.write('<b>Phone <span class="w3-text-red">*</span></b> <input id="txtCreatePhone" class="w3-input w3-left" type="tel" maxlength="12" name="phone" autocomplete="off" required oninput="this.value = this.value.replace(/[^0-9.]/g, \'\');"><br><br><br><br>');
                         res.write('<b>D.o.B <span class="w3-text-red">*</span></b> <input id="inputCreateDob" class="w3-input w3-left w3-white" type="date" name="dob" autocomplete="off" required><br><br><br><br>');
                         res.write('<b>Team </b><br> <select class="w3-select w3-white" name="team" autocomplete="off">');
                         res.write('<option value="" disabled selected>Select...</option>');
@@ -118,13 +119,14 @@ exports.pageDataCreateProfilePost = function (req, res) {
 
             var username = mysql.escape(post.username);
             var email = mysql.escape(post.email);
+            var phone = mysql.escape(post.phone);
             var firstName = mysql.escape(post.firstName);
             var lastName = mysql.escape(post.lastName);
             var dob = mysql.escape(post.dob);
             var team = mysql.escape(post.team);
 
             connection.connect();
-            connection.query("INSERT INTO user (username, email, password, firstName, lastName, dateOfBirth, teamID, gamesPlayed, wins) VALUES (" + username + "," + email + ", 'pass'," + firstName + "," + lastName + "," + dob + "," + team + ", 0, 0 )",
+            connection.query("INSERT INTO user (username, email, phone, password, firstName, lastName, dateOfBirth, teamID, gamesPlayed, wins) VALUES (" + username + "," + email + "," + phone + ", 'pass'," + firstName + "," + lastName + "," + dob + "," + team + ", 0, 0 )",
                 function (err, rows, fields) {
                     if (!err) {
                         connection.end();

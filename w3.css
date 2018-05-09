@@ -2061,6 +2061,7 @@ html {
     #adminNav > a:hover:after {
         transform: scaleX(1);
     }
+    
     #btnViewAdmin {
         display: inline-block;
         margin: 0;
