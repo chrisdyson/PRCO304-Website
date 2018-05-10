@@ -133,7 +133,7 @@ exports.pageDataEditPasswordPost = function (req, res) {
             //bcrypt.compareSync("not my password", hash); // false
             //----------------------------------------------------------
 
-            connection.query("UPDATE user SET password = " + hash + " WHERE username = " + mysql.escape(post.username),
+            connection.query("UPDATE user SET password = " + mysql.escape(post.password) + " WHERE username = " + mysql.escape(post.username),
                 function (err, rows, fields) {
                     if (!err) {
                         connection.end();
