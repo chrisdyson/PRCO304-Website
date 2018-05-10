@@ -321,7 +321,7 @@ exports.pageDataAssignCaptainSelectPost = function (req, res) {
             var team = post.team;
 
             connection.connect();
-            connection.query("SELECT * FROM user ORDER BY firstName",
+            connection.query("SELECT * FROM user WHERE teamID = " + team + " ORDER BY firstName",
                 function (err, rows, fields) {
                     if (!err) {
                         if (rows != '') {

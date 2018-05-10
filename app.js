@@ -104,6 +104,10 @@ app.get('/viewMessages', function (req, res) {
     messages.pageDataViewMessages(req, res);
 });
 
+app.get('/viewNews', function (req, res) {
+    messages.pageDataViewNewsHomepage(req, res);
+});
+
 app.get('/newMessage', function (req, res) {
     messages.pageDataNewMessage(req, res);
 });

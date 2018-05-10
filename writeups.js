@@ -28,7 +28,7 @@ exports.pageData = function (req, res) {
                     res.write('<link rel="stylesheet" href="w3.css">');
                     res.write('<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">');
                     res.write('<script src="http://code.jquery.com/jquery-latest.js" type="text/javascript"></script>');
-                    res.write('<div class="w3-container w3-card-4" style="width:80%;margin: 0 auto;">');
+                    res.write('<div class="w3-container w3-card-4" style="width:95%;margin: 0 auto;">');
                     res.write('<h3 class="w3-center">Weekly Writeups</h3>');
                     for (i = 0; i < rows.length; i++) {
                         var wcDate = String(rows[i].weekCommence).slice(0, -24);
