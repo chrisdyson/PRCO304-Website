@@ -94,6 +94,7 @@ var editProfile = require('./editprofile.js');
 var submitScore = require('./submitscore.js');
 var playerResults = require('./playerresults.js');
 var teamResults = require('./teamresults.js');
+var writeups = require('./writeups.js');
 
 app.get('/contactsData', function (req, res) {
     contacts.pageData(req, res);
@@ -261,4 +262,8 @@ app.get('/playerResults', function (req, res) {
 
 app.get('/teamResults', function (req, res) {
     teamResults.pageData(req, res);
+});
+
+app.get('/writeups', function (req, res) {
+    writeups.pageData(req, res);
 });

@@ -438,8 +438,9 @@ exports.pageDataEnterScores = function (req, res) {
                             res.write('<input type="hidden" name="playerYName" value="' + Yname + '">');
                             res.write('<input type="hidden" name="playerZName" value="' + Zname + '">');
 
+                            res.write('<textarea class="w3-input" style="resize:none; width:525px" name="writeup" placeholder="Write a quick match writeup here... (' + post.homeTeamName + ' v ' + post.awayTeamName + ')"></textarea><br>');
 
-                            res.write('<input id="createBtn" class="w3-center w3-button w3-ripple w3-light-grey" type="submit" value="Submit">');
+                            res.write('<input id="submitBtn" class="w3-center w3-button w3-ripple w3-light-grey" type="submit" value="Submit">');
                             res.write('</div></form></div>');
 
                             res.write('<script>function getScore() { var homeScore = 0;var awayScore = 0;var radioCheck1 = document.getElementsByName("AvX");var radioCheck2 = document.getElementsByName("AvY");var radioCheck3 = document.getElementsByName("AvZ");var radioCheck4 = document.getElementsByName("BvX");var radioCheck5 = document.getElementsByName("BvY");var radioCheck6 = document.getElementsByName("BvZ");var radioCheck7 = document.getElementsByName("CvX");var radioCheck8 = document.getElementsByName("CvY");var radioCheck9 = document.getElementsByName("CvZ");var radioCheck10 = document.getElementsByName("DvD");');
@@ -531,8 +532,28 @@ exports.pageDataPostSubmitScores = function (req, res) {
 
             var homePoints = 0;
             var awayPoints = 0;
-
+            var writeup = post.writeup;
+            if (writeup.substring(writeup.length - 1) == ".") {
+                writeup = writeup.substring(0, writeup.length - 1);
+            }
+            writeup = "(" + post.homeTeamName + " v " + post.awayTeamName + ") " + writeup + ". ";
+            var prevMonday = new Date();
+            prevMonday.setDate(prevMonday.getDate() - (prevMonday.getDay() + 6) % 7);
+            day = prevMonday.getDate();
+            day = ("0" + day).slice(-2);
+            month = prevMonday.getMonth() + 1;
+            month = ("0" + month).slice(-2);
+            year = prevMonday.getFullYear();
+            
+            console.log(writeup);
             connection.connect();
+
+            connection.query("UPDATE writeups SET message=CONCAT(message,'" + writeup + "') WHERE weekCommence = '"+year+"-"+month+"-"+day+"'",
+                function (err) {
+                    if (err) { //error
+                        console.log('Error while performing Query. qwerty');
+                    }
+                });
 
             if (AvX == A) {
                 homePoints = homePoints + 1;

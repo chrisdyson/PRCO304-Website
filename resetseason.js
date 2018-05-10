@@ -114,9 +114,19 @@ exports.pageDataPost = function (req, res) {
                                                 connection.query("UPDATE user SET gamesPlayed = 0, wins = 0",
                                                     function (err, rows, fields) {
                                                         if (!err) {
-                                                            connection.end();
-                                                            res.write('<script>window.top.location.href = "/admin";</script>');
-                                                            return res.end();
+                                                            connection.query("TRUNCATE TABLE writeups",
+                                                                function (err, rows, fields) {
+                                                                    if (!err) {
+                                                                        connection.end();
+                                                                        res.write('<script>window.top.location.href = "/admin";</script>');
+                                                                        return res.end();
+                                                                    } else { //error
+                                                                        console.log('Error while performing Query.');
+                                                                        res.write('There was an error deleting the data.');
+                                                                        res.end();
+                                                                        connection.end();
+                                                                    }
+                                                                });
                                                         } else { //error
                                                             console.log('Error while performing Query.');
                                                             res.write('There was an error deleting the data.');
