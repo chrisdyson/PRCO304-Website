@@ -195,12 +195,32 @@ app.get('/assignCaptain', function (req, res) {
     adminTeam.pageDataAssignCaptain(req, res);
 });
 
+app.post('/assignCaptainSelect', function (req, res) {
+    adminTeam.pageDataAssignCaptainSelectPost(req, res);
+});
+
 app.post('/assignCaptain', function (req, res) {
     adminTeam.pageDataAssignCaptainPost(req, res);
 });
 
+app.get('/assignTeam', function (req, res) {
+    adminProfile.pageDataAssignTeam(req, res);
+});
+
+app.post('/assignTeamSelect', function (req, res) {
+    adminProfile.pageDataAssignTeamSelectPost(req, res);
+});
+
+app.post('/assignTeam', function (req, res) {
+    adminProfile.pageDataAssignTeamPost(req, res);
+});
+
 app.post('/editProfileEmail', function (req, res) {
     editProfile.pageDataEditEmailPost(req, res);
+});
+
+app.post('/editProfilePhone', function (req, res) {
+    editProfile.pageDataEditPhonePost(req, res);
 });
 
 app.post('/editProfilePassword', function (req, res) {

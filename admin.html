@@ -60,12 +60,14 @@
         if (localStorage.username) {
             //logged in
             var username = localStorage.username;
-            
+
             document.getElementById('resetPass').src = "userPassReset?u=" + username;
             document.getElementById('resetSeason').src = "resetSeason?u=" + username;
             document.getElementById('addProfile').src = "addProfile?u=" + username;
             document.getElementById('addClub').src = "addClub?u=" + username;
             document.getElementById('addTeam').src = "addTeam?u=" + username;
+            document.getElementById('assignCaptain').src = "assignCaptain?u=" + username;
+            document.getElementById('assignTeam').src = "assignTeam?u=" + username;
             document.getElementById('deleteProfile').src = "deleteProfile?u=" + username;
             document.getElementById('deleteClub').src = "deleteClub?u=" + username;
             document.getElementById('deleteTeam').src = "deleteTeam?u=" + username;
@@ -172,9 +174,9 @@
     </div>
 
     <div class="w3-container w3-white w3-center" style="padding-top:75px">
-        
-        <div id="adminNav" class="w3-hide-small w3-right w3-card-4" style="position: fixed;top:51px;right:0px;border-radius: 0 0 0 10px;">
-        <a style="cursor: pointer;text-decoration: none;border-radius: 0 0 0 10px;" class="w3-tag w3-dark-grey w3-padding" onclick="$('html, body').animate({ scrollTop: $('#resetSeason').offset().top -52 }, 1000);">Season Reset</a><a style="cursor: pointer;text-decoration: none;" class="w3-tag w3-dark-grey w3-padding" onclick="$('html, body').animate({ scrollTop: $('#resetPass').offset().top -52 }, 1000);">User Password Reset</a><a style="cursor: pointer;text-decoration: none;" class="w3-tag w3-dark-grey w3-padding" onclick="$('html, body').animate({ scrollTop: $('#addProfile').offset().top -52 }, 1000);">Create User</a><a style="cursor: pointer;text-decoration: none" class="w3-tag w3-dark-grey w3-padding" onclick="$('html, body').animate({ scrollTop: $('#addClub').offset().top -52  }, 1000);">Create Club</a><a style="cursor: pointer;text-decoration: none" class="w3-tag w3-dark-grey w3-padding" onclick="$('html, body').animate({ scrollTop: $('#addTeam').offset().top -52 }, 1000);">Create Team</a><a style="cursor: pointer;text-decoration: none" class="w3-tag w3-dark-grey w3-padding" onclick="$('html, body').animate({ scrollTop: $('#deleteProfile').offset().top -52 }, 1000);">Delete User</a><a style="cursor: pointer;text-decoration: none" class="w3-tag w3-dark-grey w3-padding" onclick="$('html, body').animate({ scrollTop: $('#deleteClub').offset().top -52 }, 1000);">Delete Club</a><a style="cursor: pointer;text-decoration: none" class="w3-tag w3-dark-grey w3-padding" onclick="$('html, body').animate({ scrollTop: $('#deleteTeam').offset().top -52 }, 1000);">Delete Team</a>
+
+        <div id="adminNav" class="w3-hide-small w3-right w3-card-4 w3-dark-grey" style="position: fixed;top:51px;right:0px;border-radius: 0 0 0 10px;">
+            <a style="cursor: pointer;text-decoration: none;" class="w3-tag w3-dark-grey w3-padding" onclick="$('html, body').animate({ scrollTop: $('#addProfile').offset().top -52 }, 1000);">Create User</a><a style="cursor: pointer;text-decoration: none" class="w3-tag w3-dark-grey w3-padding" onclick="$('html, body').animate({ scrollTop: $('#addClub').offset().top -52  }, 1000);">Create Club</a><a style="cursor: pointer;text-decoration: none" class="w3-tag w3-dark-grey w3-padding" onclick="$('html, body').animate({ scrollTop: $('#addTeam').offset().top -52 }, 1000);">Create Team</a><br><a style="cursor: pointer;text-decoration: none" class="w3-tag w3-dark-grey w3-padding" onclick="$('html, body').animate({ scrollTop: $('#deleteProfile').offset().top -52 }, 1000);">Delete User</a><a style="cursor: pointer;text-decoration: none" class="w3-tag w3-dark-grey w3-padding" onclick="$('html, body').animate({ scrollTop: $('#deleteClub').offset().top -52 }, 1000);">Delete Club</a><a style="cursor: pointer;text-decoration: none" class="w3-tag w3-dark-grey w3-padding" onclick="$('html, body').animate({ scrollTop: $('#deleteTeam').offset().top -52 }, 1000);">Delete Team</a><br><a style="cursor: pointer;text-decoration: none" class="w3-tag w3-dark-grey w3-padding" onclick="$('html, body').animate({ scrollTop: $('#assignCaptain').offset().top -52 }, 1000);">Assign Captain</a><a style="cursor: pointer;text-decoration: none" class="w3-tag w3-dark-grey w3-padding" onclick="$('html, body').animate({ scrollTop: $('#assignTeam').offset().top -52 }, 1000);">Assign Team</a><br><a style="cursor: pointer;text-decoration: none;border-radius: 0 0 0 10px;" class="w3-tag w3-dark-grey w3-padding" onclick="$('html, body').animate({ scrollTop: $('#resetSeason').offset().top -52 }, 1000);">Season Reset</a><a style="cursor: pointer;text-decoration: none;" class="w3-tag w3-dark-grey w3-padding" onclick="$('html, body').animate({ scrollTop: $('#resetPass').offset().top -52 }, 1000);">User Password Reset</a>
         </div><br>
         <h2 class="w3-center">Admin</h2>
         <iframe id="resetSeason" style="border: none;width: 100%" onload="resizeIframe(this)" src=""></iframe>
@@ -182,6 +184,8 @@
         <iframe id="addProfile" style="border: none;width: 100%" onload="resizeIframe(this)" src=""></iframe>
         <iframe id="addClub" style="border: none;width: 100%" onload="resizeIframe(this)" src=""></iframe>
         <iframe id="addTeam" style="border: none;width: 100%" onload="resizeIframe(this)" src=""></iframe>
+        <iframe id="assignCaptain" style="border: none;width: 100%" onload="resizeIframe(this)" src=""></iframe>
+        <iframe id="assignTeam" style="border: none;width: 100%" onload="resizeIframe(this)" src=""></iframe>
         <iframe id="deleteProfile" style="border: none;width: 100%" onload="resizeIframe(this)" src=""></iframe>
         <iframe id="deleteClub" style="border: none;width: 100%" onload="resizeIframe(this)" src=""></iframe>
         <iframe id="deleteTeam" style="border: none;width: 100%" onload="resizeIframe(this)" src=""></iframe>

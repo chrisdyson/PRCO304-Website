@@ -115,8 +115,7 @@ exports.pageDataCreateTeamPost = function (req, res) {
                 function (err, rows, fields) {
                     if (!err) {
                         connection.end();
-                        var url = "/assignCaptain?name=" + post.teamName + "&club=" + post.club;
-                        res.write('<script>location.href = "' + url + '";</script>');
+                        res.write('<script>window.top.location.href = "/admin";</script>');
                         return res.end();
                     } else { //error
                         console.log('Error while performing Query.');
@@ -254,9 +253,8 @@ exports.pageDataAssignCaptain = function (req, res) {
         database: dbDatabase
     });
     connection.connect();
-    var teamName = req.query.name;
-    var club = req.query.club;
-    connection.query("SELECT * FROM user ORDER BY lastName",
+
+    connection.query("SELECT * FROM teams, clubs WHERE teams.clubID = clubs.clubID ORDER BY clubName",
         function (err, rows, fields) {
             if (!err) {
                 if (rows != '') {
@@ -270,19 +268,16 @@ exports.pageDataAssignCaptain = function (req, res) {
 
                     res.write('<div class="w3-container w3-card-4" style="width:85%;margin: 0 auto;">');
 
-                    res.write('<h3 class="w3-center">Assign Captain</h3>');
-                    res.write('<form action="assignCaptain" method="post">');
+                    res.write('<h3 class="w3-center">Assign Team Captain</h3>');
+                    res.write('<form action="assignCaptainSelect" method="post">');
                     res.write('<div class="w3-white" style="padding:40px;">');
-                    res.write('<b>User <span class="w3-text-red">*</span></b><br> <select class="w3-select w3-white" name="user" autocomplete="off" required>');
+                    res.write('<b>Team <span class="w3-text-red">*</span></b><br> <select class="w3-select w3-white" name="team" autocomplete="off" required>');
                     res.write('<option value="" disabled selected>Select...</option>');
                     for (i = 0; i < rows.length; i++) {
-                        res.write('<option value="' + rows[i].userID + '">' + rows[i].firstName + ' ' + rows[i].lastName + '</option>');
+                        res.write('<option value="' + rows[i].teamID + '">' + rows[i].clubName + ' ' + rows[i].teamName + '</option>');
                     }
                     res.write('</select><br><br>');
-                    res.write('<b>Confirm <span class="w3-text-red">*</span></b><br> <input class="w3-check" type="checkbox" required><br><br>');
-                    res.write('<input type="hidden" id="hiddenName" name="name" value="' + teamName + '">');
-                    res.write('<input type="hidden" id="hiddenClub" name="club" value="' + club + '">');
-                    res.write('<input id="deleteBtn" class="w3-center w3-button w3-ripple w3-light-grey" type="submit" value="Update">');
+                    res.write('<input id="setBtn" class="w3-center w3-button w3-ripple w3-light-grey" type="submit" value="Next">');
 
                     res.write('</div></form></div>');
 
@@ -302,7 +297,76 @@ exports.pageDataAssignCaptain = function (req, res) {
                 res.end();
             }
         });
+}
 
+exports.pageDataAssignCaptainSelectPost = function (req, res) {
+
+    if (req.method == 'POST') {
+        var body = '';
+        req.on('data', function (data) {
+            body += data;
+            if (body.length > 1e6)
+                req.connection.destroy();
+        });
+
+        req.on('end', function () {
+            var post = qs.parse(body);
+            var connection = mysql.createConnection({
+                host: dbHost,
+                user: dbUser,
+                password: dbPassword,
+                database: dbDatabase
+            });
+
+            var team = post.team;
+
+            connection.connect();
+            connection.query("SELECT * FROM user ORDER BY firstName",
+                function (err, rows, fields) {
+                    if (!err) {
+                        if (rows != '') {
+                            res.writeHead(200, {
+                                'Content-Type': 'text/html'
+                            });
+                            res.write('<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Raleway">');
+                            res.write('<link rel="stylesheet" href="w3.css">');
+                            res.write('<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">');
+                            res.write('<script src="http://code.jquery.com/jquery-latest.js" type="text/javascript"></script>');
+
+                            res.write('<div class="w3-container w3-card-4" style="width:85%;margin: 0 auto;">');
+
+                            res.write('<h3 class="w3-center">Assign Team Captain</h3>');
+                            res.write('<form action="assignCaptain" method="post">');
+                            res.write('<div class="w3-white" style="padding:40px;">');
+                            res.write('<b>User <span class="w3-text-red">*</span></b><br> <select class="w3-select w3-white" name="user" autocomplete="off" required>');
+                            res.write('<option value="" disabled selected>Select...</option>');
+                            for (i = 0; i < rows.length; i++) {
+                                res.write('<option value="' + rows[i].userID + '">' + rows[i].firstName + ' ' + rows[i].lastName + '</option>');
+                            }
+                            res.write('</select><br><br>');
+                            res.write('<input type="hidden" id="hiddenName" name="team" value="' + team + '">');
+                            res.write('<b>Confirm <span class="w3-text-red">*</span></b><br> <input class="w3-check" type="checkbox" required><br><br>');
+                            res.write('<input id="setBtn" class="w3-center w3-button w3-ripple w3-light-grey" type="submit" value="Update">');
+
+                            res.write('</div></form></div>');
+
+                            res.end();
+                            connection.end();
+                        } else { //error - no data
+                            console.log('Error while performing Query.');
+                            connection.end();
+                            res.write("Sorry, there was an error retrieving the user data");
+                            res.end();
+                        }
+                    } else { //error
+                        console.log('Error while performing Query.');
+                        connection.end();
+                        res.write("Sorry, there was an error retrieving the user data");
+                        res.end();
+                    }
+                });
+        });
+    }
 }
 
 exports.pageDataAssignCaptainPost = function (req, res) {
@@ -325,7 +389,7 @@ exports.pageDataAssignCaptainPost = function (req, res) {
             });
 
             connection.connect();
-            connection.query("UPDATE teams SET captain = " + mysql.escape(post.user) + " WHERE teamName = " + mysql.escape(post.name) + "AND clubID = " + mysql.escape(post.club),
+            connection.query("UPDATE teams SET captain = " + mysql.escape(post.user) + " WHERE teamID = " + mysql.escape(post.team),
                 function (err, rows, fields) {
                     if (!err) {
                         connection.end();

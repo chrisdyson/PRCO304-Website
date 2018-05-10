@@ -57,7 +57,41 @@ exports.pageDataEditEmailPost = function (req, res) {
                 });
         });
     }
+}
 
+exports.pageDataEditPhonePost = function (req, res) {
+
+    if (req.method == 'POST') {
+        var body = '';
+        req.on('data', function (data) {
+            body += data;
+            if (body.length > 1e6)
+                req.connection.destroy();
+        });
+
+        req.on('end', function () {
+            var post = qs.parse(body);
+            var connection = mysql.createConnection({
+                host: dbHost,
+                user: dbUser,
+                password: dbPassword,
+                database: dbDatabase
+            });
+            connection.connect();
+            connection.query("UPDATE user SET phone = " + mysql.escape(post.phone) + " WHERE username = " + mysql.escape(post.username),
+                function (err, rows, fields) {
+                    if (!err) {
+                        connection.end();
+                        res.write('<script>window.top.location.href = "/profile";</script>');
+                        return res.end();
+                    } else { //error
+                        console.log('Error while performing Query.');
+                        res.end();
+                        connection.end();
+                    }
+                });
+        });
+    }
 }
 
 exports.pageDataEditPasswordPost = function (req, res) {

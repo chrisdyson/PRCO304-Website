@@ -63,7 +63,7 @@ exports.pageDataCreateProfile = function (req, res) {
                         res.write('<b>First Name <span class="w3-text-red">*</span></b> <input id="txtCreateFName" class="w3-input w3-left" type="text" name="firstName" autocomplete="off" required><br><br><br><br>');
                         res.write('<b>Last Name <span class="w3-text-red">*</span></b> <input id="txtCreateLName" class="w3-input w3-left" type="text" name="lastName" autocomplete="off" required><br><br><br><br>');
                         res.write('<b>Email <span class="w3-text-red">*</span></b> <input id="txtCreateEmail" class="w3-input w3-left" type="email" name="email" autocomplete="off" required><br><br><br><br>');
-                        res.write('<b>Phone <span class="w3-text-red">*</span></b> <input id="txtCreatePhone" class="w3-input w3-left" type="tel" maxlength="12" name="phone" autocomplete="off" required oninput="this.value = this.value.replace(/[^0-9.]/g, \'\');"><br><br><br><br>');
+                        res.write('<b>Phone <span class="w3-text-red">*</span></b> <input id="txtCreatePhone" class="w3-input w3-left" type="tel" maxlength="11" name="phone" autocomplete="off" required oninput="this.value = this.value.replace(/[^0-9.]/g, \'\');"><br><br><br><br>');
                         res.write('<b>D.o.B <span class="w3-text-red">*</span></b> <input id="inputCreateDob" class="w3-input w3-left w3-white" type="date" name="dob" autocomplete="off" required><br><br><br><br>');
                         res.write('<b>Team </b><br> <select class="w3-select w3-white" name="team" autocomplete="off">');
                         res.write('<option value="" disabled selected>Select...</option>');
@@ -131,7 +131,7 @@ exports.pageDataCreateProfilePost = function (req, res) {
                     if (!err) {
                         connection.end();
 
-                        res.write('<script>location.href = "/addProfileMailChimp?e='+post.email+'&u='+post.username+'&f='+post.firstName+'&l='+post.lastName+'";</script>');
+                        res.write('<script>location.href = "/addProfileMailChimp?e=' + post.email + '&u=' + post.username + '&f=' + post.firstName + '&l=' + post.lastName + '";</script>');
                         return res.end();
                     } else { //error
                         console.log('Error while performing Query. qwerty');
@@ -277,6 +277,167 @@ exports.pageDataDeleteProfilePost = function (req, res) {
                     } else { //error
                         console.log('Error while performing Query.');
                         res.write('There was an error deleting this user. Make sure they haven\'t already been deleted or that they are a captain');
+                        res.end();
+                        connection.end();
+                    }
+                });
+        });
+    }
+
+}
+
+exports.pageDataAssignTeam = function (req, res) {
+
+    var connection = mysql.createConnection({
+        host: dbHost,
+        user: dbUser,
+        password: dbPassword,
+        database: dbDatabase
+    });
+    connection.connect();
+
+    connection.query("SELECT * FROM user ORDER BY firstName",
+        function (err, rows, fields) {
+            if (!err) {
+                if (rows != '') {
+                    res.writeHead(200, {
+                        'Content-Type': 'text/html'
+                    });
+                    res.write('<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Raleway">');
+                    res.write('<link rel="stylesheet" href="w3.css">');
+                    res.write('<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">');
+                    res.write('<script src="http://code.jquery.com/jquery-latest.js" type="text/javascript"></script>');
+
+                    res.write('<div class="w3-container w3-card-4" style="width:85%;margin: 0 auto;">');
+
+                    res.write('<h3 class="w3-center">Assign Team</h3>');
+                    res.write('<form action="assignTeamSelect" method="post">');
+                    res.write('<div class="w3-white" style="padding:40px;">');
+                    res.write('<b>User <span class="w3-text-red">*</span></b><br> <select class="w3-select w3-white" name="user" autocomplete="off" required>');
+                    res.write('<option value="" disabled selected>Select...</option>');
+                    for (i = 0; i < rows.length; i++) {
+                        res.write('<option value="' + rows[i].userID + '">' + rows[i].firstName + ' ' + rows[i].lastName + '</option>');
+                    }
+                    res.write('</select><br><br>');
+                    res.write('<input id="setBtn" class="w3-center w3-button w3-ripple w3-light-grey" type="submit" value="Next">');
+
+                    res.write('</div></form></div>');
+
+                    res.end();
+                    connection.end();
+                } else { //error - no data
+                    console.log('Error while performing Query.');
+                    connection.end();
+                    res.write("Sorry, there was an error retrieving the user data");
+                    res.end();
+                }
+            } else { //error
+                console.log('Error while performing Query.');
+                connection.end();
+                res.write("Sorry, there was an error retrieving the user data");
+                res.end();
+            }
+        });
+}
+
+exports.pageDataAssignTeamSelectPost = function (req, res) {
+
+    if (req.method == 'POST') {
+        var body = '';
+        req.on('data', function (data) {
+            body += data;
+            if (body.length > 1e6)
+                req.connection.destroy();
+        });
+
+        req.on('end', function () {
+            var post = qs.parse(body);
+            var connection = mysql.createConnection({
+                host: dbHost,
+                user: dbUser,
+                password: dbPassword,
+                database: dbDatabase
+            });
+
+            var user = post.user;
+
+            connection.connect();
+            connection.query("SELECT * FROM teams, clubs WHERE teams.clubID = clubs.clubID ORDER BY clubName",
+                function (err, rows, fields) {
+                    if (!err) {
+                        if (rows != '') {
+                            res.writeHead(200, {
+                                'Content-Type': 'text/html'
+                            });
+                            res.write('<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Raleway">');
+                            res.write('<link rel="stylesheet" href="w3.css">');
+                            res.write('<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">');
+                            res.write('<script src="http://code.jquery.com/jquery-latest.js" type="text/javascript"></script>');
+
+                            res.write('<div class="w3-container w3-card-4" style="width:85%;margin: 0 auto;">');
+
+                            res.write('<h3 class="w3-center">Assign Team</h3>');
+                            res.write('<form action="assignTeam" method="post">');
+                            res.write('<div class="w3-white" style="padding:40px;">');
+                            res.write('<b>Team <span class="w3-text-red">*</span></b><br> <select class="w3-select w3-white" name="team" autocomplete="off" required>');
+                            res.write('<option value="" disabled selected>Select...</option>');
+                            for (i = 0; i < rows.length; i++) {
+                                res.write('<option value="' + rows[i].teamID + '">' + rows[i].clubName + ' ' + rows[i].teamName + '</option>');
+                            }
+                            res.write('</select><br><br>');
+                            res.write('<input type="hidden" id="hiddenName" name="user" value="' + user + '">');
+                            res.write('<b>Confirm <span class="w3-text-red">*</span></b><br> <input class="w3-check" type="checkbox" required><br><br>');
+                            res.write('<input id="setBtn" class="w3-center w3-button w3-ripple w3-light-grey" type="submit" value="Update">');
+
+                            res.write('</div></form></div>');
+
+                            res.end();
+                            connection.end();
+                        } else { //error - no data
+                            console.log('Error while performing Query.');
+                            connection.end();
+                            res.write("Sorry, there was an error retrieving the user data");
+                            res.end();
+                        }
+                    } else { //error
+                        console.log('Error while performing Query.');
+                        connection.end();
+                        res.write("Sorry, there was an error retrieving the user data");
+                        res.end();
+                    }
+                });
+        });
+    }
+}
+
+exports.pageDataAssignTeamPost = function (req, res) {
+
+    if (req.method == 'POST') {
+        var body = '';
+        req.on('data', function (data) {
+            body += data;
+            if (body.length > 1e6)
+                req.connection.destroy();
+        });
+
+        req.on('end', function () {
+            var post = qs.parse(body);
+            var connection = mysql.createConnection({
+                host: dbHost,
+                user: dbUser,
+                password: dbPassword,
+                database: dbDatabase
+            });
+
+            connection.connect();
+            connection.query("UPDATE user SET teamID = " + mysql.escape(post.team) + " WHERE userID = " + mysql.escape(post.user),
+                function (err, rows, fields) {
+                    if (!err) {
+                        connection.end();
+                        res.write('<script>window.top.location.href = "/admin";</script>');
+                        return res.end();
+                    } else { //error
+                        console.log('Error while performing Query.');
                         res.end();
                         connection.end();
                     }

@@ -30,9 +30,9 @@ exports.pageData = function (req, res) {
                     res.write('<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">');
                     res.write('<script src="http://code.jquery.com/jquery-latest.js" type="text/javascript"></script>');
                     res.write('<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>');
-                    res.write('<style type="text/css">#editEmailIcon:hover{color:#ff4d4d;cursor:pointer}</style>');
+                    res.write('<style type="text/css">#editEmailIcon:hover{color:#ff4d4d;cursor:pointer} #editPhoneIcon:hover{color:#ff4d4d;cursor:pointer}</style>');
 
-                    res.write('<script>function openEmailEditor() { $("#divEmail").hide();$("#divEmailChange").show();} window.onload = function() {$(".hiddenusername").val(localStorage.username)}</script>');
+                    res.write('<script>function openEmailEditor() { $("#divEmail").hide();$("#divEmailChange").show();} function openPhoneEditor() { $("#divPhone").hide();$("#divPhoneChange").show();} window.onload = function() {$(".hiddenusername").val(localStorage.username)}</script>');
                     res.write('<div class="w3-container w3-card-4" style="width:80%;margin: 0 auto;">');
 
                     for (i = 0; i < rows.length; i++) {
@@ -42,6 +42,8 @@ exports.pageData = function (req, res) {
 
                         res.write('<p><div style="display:block" id="divEmail">' + rows[i].email + '&nbsp;&nbsp;&nbsp;<a onclick="openEmailEditor()"><i id="editEmailIcon" class="fa fa-pencil"></i></a></div><div id="divEmailChange" style="display:none"><form action="editProfileEmail" method="post"><input style="width:200px" id="txtEmail" class="w3-left w3-input" placeholder="Change Email..." type="email" name="email" autocomplete="off" required><input type="hidden" class="hiddenusername" name="username" value=""><input id="subEditBtn" style="border-bottom: 1px solid #ccc;" class="w3-center w3-button w3-ripple w3-white" type="submit" value="Edit"></form></div></p>');
 
+                        res.write('<p><div style="display:block" id="divPhone">' + rows[i].phone + '&nbsp;&nbsp;&nbsp;<a onclick="openPhoneEditor()"><i id="editPhoneIcon" class="fa fa-pencil"></i></a></div><div id="divPhoneChange" style="display:none"><form action="editProfilePhone" method="post"><input style="width:200px" id="txtPhone" class="w3-left w3-input" maxlength="11" placeholder="Change Phone..." type="tel" name="phone" autocomplete="off" required oninput="this.value = this.value.replace(/[^0-9.]/g, \'\');"><input type="hidden" class="hiddenusername" name="username" value=""><input id="subEditBtn" style="border-bottom: 1px solid #ccc;" class="w3-center w3-button w3-ripple w3-white" type="submit" value="Edit"></form></div></p>');
+                        
                         res.write('<p><form action="editProfilePassword" method="post"><input style="width:200px" id="txtPassword" class="w3-left w3-input" placeholder="Change Password..." type="password" name="password" autocomplete="off" required><input type="hidden" class="hiddenusername" name="username" value=""><input id="subEditPasswordBtn" style="border-bottom: 1px solid #ccc;" class="w3-center w3-button w3-ripple w3-white" type="submit" value="Edit"></form></p><p style="display:none" id="lblUpdatePassMessage" class="w3-tag w3-padding w3-round-large w3-red w3-center">You still have the default password, please update this immediately for security reasons!</p>');
                         if (rows[i].password == "pass") {
                             res.write('<script>document.getElementById("lblUpdatePassMessage").style.display = "block";</script>');
