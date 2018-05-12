@@ -70,6 +70,7 @@
     function resizeIframe(obj) {
         obj.style.height = 75 + obj.contentWindow.document.body.scrollHeight + 'px';
     }
+
 </script>
 
 <body>
@@ -115,7 +116,6 @@
                     <div id="navBarDropProfile" class="navBarDrop w3-dropdown-content w3-dark-grey w3-card-2">
                         <a onclick="logInOut();" class="loginout w3-nav-drop"></a>
                         <a href="profile" class="loggedin w3-nav-drop"><i class="fa fa-pencil"></i> View Profile</a>
-                        <a href="messages" class="loggedin w3-nav-drop"><i class="fa fa-comments"></i> Messages</a>
                     </div>
                 </div>
             </div>
@@ -145,7 +145,6 @@
             <div id="navBarDropProfileMob" style="display: none" class="w3-dark-grey w3-card-2">
                 <a onclick="logInOut();" class="loginout w3-bar-item w3-button"></a>
                 <a href="profile" class="loggedin w3-bar-item w3-button"><i class="fa fa-pencil"></i> View Profile</a>
-                <a href="messages" class="loggedin w3-bar-item w3-button"><i class="fa fa-comments"></i> Messages</a>
             </div>
         </div>
     </nav>
@@ -161,13 +160,11 @@
             </footer>
         </div>
     </div>
-    
+
     <div class="w3-container w3-white w3-center" style="padding-top:75px">
         <h2 class="w3-center">News</h2>
-        
         <iframe style="border: none;width: 100%;" onload="resizeIframe(this)" src="viewMessages"></iframe>
         <iframe id="newMessage" style="border: none;width: 100%;" onload="resizeIframe(this)" src=""></iframe>
-        
     </div>
 
     <script>

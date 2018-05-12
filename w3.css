@@ -488,6 +488,11 @@ a {
     display: block;
     margin: 0 auto;
     width: 100%;
+    transition: border 300ms ease-in-out;
+}
+
+.w3-input:focus {
+    border-bottom: solid 1px #999999;
 }
 
 .w3-input-red {
@@ -1992,6 +1997,27 @@ html {
     outline: none;
 }
 
+a {
+    display: inline-block;
+    margin: 0;
+}
+
+a:after {
+    display: block;
+    content: '';
+    border-bottom: solid 1px #ff4d4d;
+    transform: scaleX(0);
+    transition: transform 350ms ease-in-out;
+}
+
+a:hover:after {
+    transform: scaleX(1);
+}
+
+a:hover {
+    text-decoration: none;
+}
+
 @media only screen and (min-width: 992px) {
     /* Underline effect on navbar */
     #myNavbar > div > a {
@@ -2061,7 +2087,7 @@ html {
     #adminNav > a:hover:after {
         transform: scaleX(1);
     }
-    
+
     #btnViewAdmin {
         display: inline-block;
         margin: 0;
